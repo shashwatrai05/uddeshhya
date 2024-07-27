@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "431244686112",
+    "project_id": "uddeshhya-fe2ef",
+    "storage_bucket": "uddeshhya-fe2ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431244686112:android:2de3225c55185acc051d45",
+        "android_client_info": {
+          "package_name": "com.example.uddeshhya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCddQrr5NMlp9oT9BJb16CFOI8T8p40AAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

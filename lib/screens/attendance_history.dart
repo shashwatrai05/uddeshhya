@@ -15,6 +15,7 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
 
   List<ClassModel> _classes = [];
   List<AttendanceModel>? _attendanceRecords;
+  Map<String, double>? _attendancePercentages;
   String? _selectedClassName;
 
   @override
@@ -34,6 +35,7 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
     final records = await _attendanceService.getAttendanceHistory(className);
     setState(() {
       _attendanceRecords = records;
+      _attendancePercentages = AttendanceModel.calculateAttendancePercentages(records);
       _selectedClassName = className;
     });
   }
@@ -79,11 +81,24 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
                       }).toList(),
                     ),
                   ),
+                  if (_attendancePercentages != null) ...[
+                    Text(
+                      'Attendance Percentages:',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    ..._attendancePercentages!.entries.map((entry) {
+                      return ListTile(
+                        title: Text(entry.key),
+                        trailing: Text('${entry.value.toStringAsFixed(2)}%'),
+                      );
+                    }).toList(),
+                  ],
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
                         _attendanceRecords = null;
                         _selectedClassName = null;
+                        _attendancePercentages = null;
                       });
                     },
                     child: const Text('Back to Class List'),

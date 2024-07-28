@@ -81,42 +81,27 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Class Management'),
-      //   actions: <Widget>[
-      //     FutureBuilder<String>(
-      //       future: _userRole,
-      //       builder: (context, snapshot) {
-      //         if (snapshot.connectionState == ConnectionState.waiting) {
-      //           return Center(child: CircularProgressIndicator());
-      //         }
-      //         if (snapshot.hasError || !snapshot.hasData || snapshot.data != 'admin') {
-      //           return SizedBox.shrink();
-      //         }
-      //         return IconButton(
-      //           icon: Icon(Icons.add),
-      //           onPressed: _addClass,
-      //         );
-      //       },
-      //     ),
-      //     IconButton(onPressed: (){
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => AttendanceScreen(),
-      //         ),
-      //       );
-      //     } , icon: Icon(Icons.abc)),
-      //     IconButton(onPressed: (){
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => AttendanceHistoryScreen(),
-      //         ),
-      //       );
-      //     } , icon: Icon(Icons.abc))
-      //   ],
-      // ),
+      appBar: AppBar(
+        title: Text('Class Management'),
+        actions: <Widget>[
+          FutureBuilder<String>(
+            future: _userRole,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError || !snapshot.hasData || snapshot.data != 'admin') {
+                return SizedBox.shrink();
+              }
+              return IconButton(
+                icon: Icon(Icons.add),
+                onPressed: _addClass,
+              );
+            },
+          ),
+         
+        ],
+      ),
       body: FutureBuilder<List<ClassModel>>(
         future: _classesFuture,
         builder: (context, snapshot) {

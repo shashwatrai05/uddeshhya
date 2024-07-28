@@ -30,6 +30,29 @@ class AttendanceModel {
       'studentAttendance': studentAttendance,
     };
   }
+
+  static Map<String, double> calculateAttendancePercentages(List<AttendanceModel> records) {
+    final Map<String, List<bool>> studentAttendanceMap = {};
+
+    // Aggregate attendance records
+    for (var record in records) {
+      for (var entry in record.studentAttendance.entries) {
+        if (!studentAttendanceMap.containsKey(entry.key)) {
+          studentAttendanceMap[entry.key] = [];
+        }
+        studentAttendanceMap[entry.key]!.add(entry.value);
+      }
+    }
+
+    // Calculate percentages
+    final Map<String, double> percentages = {};
+    for (var entry in studentAttendanceMap.entries) {
+      final totalClasses = entry.value.length;
+      final presentDays = entry.value.where((present) => present).length;
+      final percentage = (presentDays / totalClasses) * 100;
+      percentages[entry.key] = percentage;
+    }
+
+    return percentages;
+  }
 }
-
-

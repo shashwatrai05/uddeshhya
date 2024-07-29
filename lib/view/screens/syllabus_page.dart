@@ -5,8 +5,9 @@ import '../../models/student.dart';
 
 class SyllabusPage extends StatelessWidget {
   final StudentModel student;
+  final String classId; // Add classId to manage Firestore updates
 
-  SyllabusPage({required this.student});
+  SyllabusPage({required this.student, required this.classId});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class SyllabusPage extends StatelessWidget {
                 ..[entry.key] = value!;
               FirebaseFirestore.instance
                 .collection('classes')
-                .doc('classId') // Use the correct classId here
+                .doc(classId) // Use the provided classId
                 .collection('students')
                 .doc(student.id)
                 .update({'syllabusCompletion': updatedCompletion});

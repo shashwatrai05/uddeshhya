@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uddeshhya/view/screens/syllabus_page.dart';
 import '../../models/student.dart';
 import '../../services/auth_service.dart';
-import '../../services/student_service.dart';// Import the SyllabusScreen
+import '../../services/student_service.dart'; // Import the StudentService
 
 class StudentListScreen extends StatefulWidget {
   final String classId;
@@ -27,23 +27,22 @@ class _StudentListScreenState extends State<StudentListScreen> {
   }
 
   void _addStudent() async {
-  final studentName = await _showAddStudentDialog();
-  final studentStandard = await _showStandardDialog();
-  if (studentName != null && studentName.isNotEmpty && studentStandard != null) {
-    final syllabusCompletion = await _studentService.fetchSyllabusCompletion(studentStandard);
-    final newStudent = StudentModel(
-      id: DateTime.now().toString(),
-      name: studentName,
-      standard: studentStandard,
-      syllabusCompletion: syllabusCompletion,
-    );
-    await _studentService.addStudent(widget.classId, newStudent);
-    setState(() {
-      _studentsFuture = _studentService.getStudents(widget.classId);
-    });
+    final studentName = await _showAddStudentDialog();
+    final studentStandard = await _showStandardDialog();
+    if (studentName != null && studentName.isNotEmpty && studentStandard != null) {
+      final syllabusCompletion = await _studentService.fetchSyllabusCompletion(studentStandard);
+      final newStudent = StudentModel(
+        id: DateTime.now().toString(),
+        name: studentName,
+        standard: studentStandard,
+        syllabusCompletion: syllabusCompletion,
+      );
+      await _studentService.addStudent(widget.classId, newStudent);
+      setState(() {
+        _studentsFuture = _studentService.getStudents(widget.classId);
+      });
+    }
   }
-}
-
 
   Future<String?> _showStandardDialog() {
     final TextEditingController _standardController = TextEditingController();
@@ -149,11 +148,15 @@ class _StudentListScreenState extends State<StudentListScreen> {
                 title: Text(student.name),
                 onTap: () {
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>SyllabusPage(student: student)
-                    ),
-                  );
+  context,
+  MaterialPageRoute(
+    builder: (context) => SyllabusPage(
+      student: student,
+      classId: widget.classId, // Pass the classId here
+    ),
+  ),
+);
+
                 },
                 trailing: FutureBuilder<String>(
                   future: _userRole,

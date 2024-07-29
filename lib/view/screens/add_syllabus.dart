@@ -1,5 +1,3 @@
-// add_syllabus_screen.dart
-
 import 'package:flutter/material.dart';
 import '../../models/syllabus.dart';
 import '../../services/syllabus_service.dart';
@@ -12,14 +10,14 @@ class AddSyllabusScreen extends StatefulWidget {
 class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
   final SyllabusService _syllabusService = SyllabusService();
   final TextEditingController _standardController = TextEditingController();
-  final Map<String, bool> _topics = {};
+  final List<Topic> _topics = [];
   final TextEditingController _topicController = TextEditingController();
 
   void _addTopic() {
-    final topic = _topicController.text.trim();
-    if (topic.isNotEmpty) {
+    final topicTitle = _topicController.text.trim();
+    if (topicTitle.isNotEmpty) {
       setState(() {
-        _topics[topic] = false;
+        _topics.add(Topic(title: topicTitle, isCompleted: false));
         _topicController.clear();
       });
     }
@@ -28,12 +26,9 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
   void _saveSyllabus() async {
     final standard = _standardController.text.trim();
     if (standard.isNotEmpty && _topics.isNotEmpty) {
-      // Convert topics map to a list of strings
-      final topicsList = _topics.keys.toList();
-      
       final syllabus = SyllabusModel(
         standard: standard,
-        topics: topicsList, // Update to use list of topics
+        topics: _topics, // Pass the list of Topic objects
       );
       
       await _syllabusService.addSyllabus(syllabus);
@@ -65,20 +60,27 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
               child: const Text('Add Topic'),
             ),
             Expanded(
-              child: ListView(
-                children: _topics.keys.map((topic) {
+              child: ListView.builder(
+                itemCount: _topics.length,
+                itemBuilder: (context, index) {
+                  final topic = _topics[index];
                   return ListTile(
-                    title: Text(topic),
+                    title: Text(topic.title),
                     trailing: Checkbox(
-                      value: _topics[topic],
+                      value: topic.isCompleted,
                       onChanged: (bool? value) {
                         setState(() {
-                          _topics[topic] = value!;
+                          topic.isCompleted = value!;
                         });
                       },
                     ),
+                    onLongPress: () {
+                      setState(() {
+                        _topics.removeAt(index);
+                      });
+                    },
                   );
-                }).toList(),
+                },
               ),
             ),
             ElevatedButton(

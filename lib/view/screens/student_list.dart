@@ -1,9 +1,8 @@
-// student_list_screen.dart
-
 import 'package:flutter/material.dart';
-import '../models/student.dart';
-import '../services/auth_service.dart';
-import '../services/student_service.dart';
+import 'package:uddeshhya/view/screens/syllabus_page.dart';
+import '../../models/student.dart';
+import '../../services/auth_service.dart';
+import '../../services/student_service.dart';// Import the SyllabusScreen
 
 class StudentListScreen extends StatefulWidget {
   final String classId;
@@ -16,7 +15,7 @@ class StudentListScreen extends StatefulWidget {
 
 class _StudentListScreenState extends State<StudentListScreen> {
   final StudentService _studentService = StudentService();
-    final AuthService _authService = AuthService();
+  final AuthService _authService = AuthService();
   late Future<List<StudentModel>> _studentsFuture;
   late Future<String> _userRole;
 
@@ -28,17 +27,52 @@ class _StudentListScreenState extends State<StudentListScreen> {
   }
 
   void _addStudent() async {
-    final studentName = await _showAddStudentDialog();
-    if (studentName != null && studentName.isNotEmpty) {
-      final newStudent = StudentModel(
-        id: DateTime.now().toString(),
-        name: studentName,
-      );
-      await _studentService.addStudent(widget.classId, newStudent);
-      setState(() {
-        _studentsFuture = _studentService.getStudents(widget.classId);
-      });
-    }
+  final studentName = await _showAddStudentDialog();
+  final studentStandard = await _showStandardDialog();
+  if (studentName != null && studentName.isNotEmpty && studentStandard != null) {
+    final syllabusCompletion = await _studentService.fetchSyllabusCompletion(studentStandard);
+    final newStudent = StudentModel(
+      id: DateTime.now().toString(),
+      name: studentName,
+      standard: studentStandard,
+      syllabusCompletion: syllabusCompletion,
+    );
+    await _studentService.addStudent(widget.classId, newStudent);
+    setState(() {
+      _studentsFuture = _studentService.getStudents(widget.classId);
+    });
+  }
+}
+
+
+  Future<String?> _showStandardDialog() {
+    final TextEditingController _standardController = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Enter Student Standard'),
+          content: TextField(
+            controller: _standardController,
+            decoration: const InputDecoration(hintText: 'Enter student standard'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Add'),
+              onPressed: () {
+                Navigator.of(context).pop(_standardController.text);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<String?> _showAddStudentDialog() {
@@ -79,19 +113,18 @@ class _StudentListScreenState extends State<StudentListScreen> {
         actions: <Widget>[
           FutureBuilder<String>(
             future: _userRole,
-            builder: (context,snapshot){
-               if (snapshot.connectionState == ConnectionState.waiting) {
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
               if (snapshot.hasError || !snapshot.hasData || snapshot.data != 'admin') {
                 return const SizedBox.shrink();
               }
               return IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: _addStudent,
-            );
+                icon: const Icon(Icons.add),
+                onPressed: _addStudent,
+              );
             },
-
           ),
         ],
       ),
@@ -114,9 +147,17 @@ class _StudentListScreenState extends State<StudentListScreen> {
               final student = students[index];
               return ListTile(
                 title: Text(student.name),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>SyllabusPage(student: student)
+                    ),
+                  );
+                },
                 trailing: FutureBuilder<String>(
                   future: _userRole,
-                  builder: (context,snapshot){
+                  builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const SizedBox.shrink();
                     }
@@ -124,16 +165,15 @@ class _StudentListScreenState extends State<StudentListScreen> {
                       return const SizedBox.shrink();
                     }
                     return IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () async {
-                      await _studentService.deleteStudent(widget.classId, student.id);
-                      setState(() {
-                        _studentsFuture = _studentService.getStudents(widget.classId);
-                      });
-                    },
-                  );
+                      icon: const Icon(Icons.delete),
+                      onPressed: () async {
+                        await _studentService.deleteStudent(widget.classId, student.id);
+                        setState(() {
+                          _studentsFuture = _studentService.getStudents(widget.classId);
+                        });
+                      },
+                    );
                   },
-                   
                 ),
               );
             },

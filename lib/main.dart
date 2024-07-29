@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:uddeshhya/mainScreen.dart';
+import 'package:uddeshhya/view/mainScreen.dart';
 import 'package:uddeshhya/services/auth_service.dart';
-import 'screens/login_screen.dart';
-import 'screens/sign_up_screen.dart';
+import 'view/screens/login_screen.dart';
+import 'view/screens/sign_up_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

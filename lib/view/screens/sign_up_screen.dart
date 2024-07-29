@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uddeshhya/screens/class_management.dart';
-import '../services/auth_service.dart';
+import 'package:uddeshhya/view/screens/class_management.dart';
+import '../../services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const routeName = '/signup';

@@ -1,9 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:uddeshhya/screens/attendance_history.dart';
-import 'package:uddeshhya/screens/attendance_screen.dart';
-import 'package:uddeshhya/screens/class_management.dart';
-import 'package:uddeshhya/screens/profilepage.dart';
+import 'package:uddeshhya/view/screens/activity_planner_screen.dart';
+import 'package:uddeshhya/view/screens/attendance_history.dart';
+import 'package:uddeshhya/view/screens/attendance_screen.dart';
+import 'package:uddeshhya/view/screens/class_management.dart';
+import 'package:uddeshhya/view/screens/profilepage.dart';
 
 class MainPage extends StatefulWidget {
   final int selectedIndex;
@@ -26,7 +27,8 @@ class _MainPageState extends State<MainPage> {
       ClassManagementScreen(),
       AttendanceScreen(), // Replace with your actual placeholder widget or screen
       AttendanceHistoryScreen(),
-      ProfilePage()
+      ProfilePage(),
+      ActivityPlannerScreen()
       // Add more screens here
     ];
   }
@@ -107,6 +109,14 @@ class _MainPageState extends State<MainPage> {
               Icon(Icons.person,
                   size: 25, color: Colors.white),
               Text('History', style: TextStyle(color: Colors.white, fontSize: 12)),
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.book,
+                  size: 25, color: Colors.white),
+              Text('Syllabus', style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
         ],

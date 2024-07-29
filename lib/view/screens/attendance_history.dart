@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/class.dart';
-import '../models/attendance.dart';
-import '../services/class_service.dart';
-import '../services/attendance_service.dart';
+import '../../models/class.dart';
+import '../../models/attendance.dart';
+import '../../services/class_service.dart';
+import '../../services/attendance_service.dart';
 
 class AttendanceHistoryScreen extends StatefulWidget {
   @override

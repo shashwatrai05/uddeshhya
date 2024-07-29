@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:uddeshhya/mainScreen.dart';
+import 'package:uddeshhya/view/mainScreen.dart';
 
-import '../services/auth_service.dart';
+import '../../services/auth_service.dart';
 import 'sign_up_screen.dart';
 
 

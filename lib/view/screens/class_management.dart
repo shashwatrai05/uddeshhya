@@ -1,10 +1,10 @@
 // class_management.dart
 
 import 'package:flutter/material.dart';
-import '../models/class.dart';
-import '../models/student.dart';
-import '../services/class_service.dart';
-import '../services/auth_service.dart';
+import '../../models/class.dart';
+import '../../models/student.dart';
+import '../../services/class_service.dart';
+import '../../services/auth_service.dart';
 import 'student_list.dart';  // Import the StudentListScreen
 
 class ClassManagementScreen extends StatefulWidget {

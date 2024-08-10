@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
 import 'package:uddeshhya/view/mainScreen.dart';
-import 'package:uddeshhya/view/screens/Class%20Dashboard/class_management.dart';
 import '../../services/auth_service.dart';
 import 'login_screen.dart'; // Import the login screen
 
@@ -9,6 +8,7 @@ class SignUpScreen extends StatefulWidget {
   static const routeName = '/signup';
   final AuthService authService;
 
+  // ignore: prefer_const_constructors_in_immutables
   SignUpScreen({required this.authService});
 
   @override
@@ -20,6 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   String role = 'team_member'; // Default role
   bool _obscureText = true; // Toggle for password visibility
+  // ignore: unused_field
   String? _errorMessage;
 
   void _register() async {
@@ -50,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => MainPage(),
+            builder: (context) => const MainPage(),
           ),
         );
       }
@@ -80,10 +81,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             //mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Hey there,',
                     style: TextStyle(
                       fontSize: 24,
@@ -112,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                 ),
               ),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -127,8 +128,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   prefixIcon: const Icon(Icons.email, color: Colors.white70),
-                  hintStyle: TextStyle(color: Colors.white60),
-                  labelStyle: TextStyle(color: Colors.white70),
+                  hintStyle: const TextStyle(color: Colors.white60),
+                  labelStyle: const TextStyle(color: Colors.white70),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(color: Colors.blueGrey[500]!),
@@ -162,8 +163,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       });
                     },
                   ),
-                  hintStyle: TextStyle(color: Colors.white60),
-                  labelStyle: TextStyle(color: Colors.white70),
+                  hintStyle: const TextStyle(color: Colors.white60),
+                  labelStyle: const TextStyle(color: Colors.white70),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(color: Colors.blueGrey[500]!),
@@ -199,7 +200,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
+                    const Text(
                       'Already have an account?',
                       style: TextStyle(color: Colors.white60, fontSize: 16),
                     ),

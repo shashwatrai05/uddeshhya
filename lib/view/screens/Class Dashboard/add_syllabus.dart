@@ -33,14 +33,14 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
 void _saveSyllabus() async {
   if (_selectedStandard.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Please select a standard.')),
+      const SnackBar(content: Text('Please select a standard.')),
     );
     return;
   }
   
   if (_topics.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Please add at least one topic.')),
+      const SnackBar(content: Text('Please add at least one topic.')),
     );
     return;
   }
@@ -85,7 +85,7 @@ void _saveSyllabus() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Add Syllabus',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ void _saveSyllabus() async {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -175,21 +175,21 @@ void _saveSyllabus() async {
                       controller: _topicController,
                       decoration: InputDecoration(
                         labelText: 'Topic Name',
-                        labelStyle: TextStyle(color: Colors.white70, fontSize: 16),
+                        labelStyle: const TextStyle(color: Colors.white70, fontSize: 16),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.white54),
+                          borderSide: const BorderSide(color: Colors.white54),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.blueAccent), // You can replace `Colors.blueAccent` with your color
+                          borderSide: const BorderSide(color: Colors.blueAccent), // You can replace `Colors.blueAccent` with your color
                         ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0), // Increased vertical padding
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0), // Increased vertical padding
                         errorText: _topicError,
                         filled: true,
                         fillColor: Colors.transparent, // Background color of the text field
                       ),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                       cursorColor: Colors.white, // Cursor color
                     ),
                   ),
@@ -223,7 +223,7 @@ void _saveSyllabus() async {
                           color: Colors.grey[800],
                           borderRadius: BorderRadius.circular(8),
                           boxShadow: [
-                            BoxShadow(
+                            const BoxShadow(
                               color: Colors.black54,
                               blurRadius: 4.0,
                               offset: Offset(0, 2),
@@ -275,7 +275,7 @@ void _saveSyllabus() async {
                 child: const Text('Save Syllabus', style: TextStyle(color: textcolor),),
                 style: ElevatedButton.styleFrom(
                   primary: uddeshhyacolor,
-                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

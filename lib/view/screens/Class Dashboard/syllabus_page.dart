@@ -33,7 +33,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
           .doc(widget.student.id)
           .update({'syllabusCompletion': _updatedSyllabusCompletion});
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Syllabus updated successfully!')),
+        const SnackBar(content: Text('Syllabus updated successfully!')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -52,7 +52,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
       appBar: AppBar(
         title:Text(
           '${widget.student.name}\'s Syllabus',
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: textcolor,
           ),
@@ -60,7 +60,7 @@ class _SyllabusPageState extends State<SyllabusPage> {
         elevation: 10,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -74,11 +74,11 @@ class _SyllabusPageState extends State<SyllabusPage> {
               child: ListView(
                 children: _updatedSyllabusCompletion.entries.map((entry) {
                   return Container(
-                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
                       child: CheckboxListTile(
                         title: Text(
                           entry.key,
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         value: entry.value,
                         onChanged: (value) {
@@ -88,32 +88,32 @@ class _SyllabusPageState extends State<SyllabusPage> {
                         },
                         checkColor: Colors.black,
                         activeColor: uddeshhyacolor,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                       ),
                     
                   );
                 }).toList(),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Center(
               child: ElevatedButton(
                 onPressed: _submitSyllabus,
                 style: ElevatedButton.styleFrom(
                   primary: uddeshhyacolor,
-                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Submit Changes',
                   style: TextStyle(color: textcolor, fontSize: 16),
                 ),
               ),
 
             ),
-            SizedBox(height: 20,)
+            const SizedBox(height: 20,)
           ],
         ),
       ),

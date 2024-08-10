@@ -49,7 +49,7 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
       appBar: AppBar(
         title: Text(
           'Attendance History for ${widget.className}',
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: textcolor,
           ),
@@ -57,28 +57,28 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
         elevation: 15,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       backgroundColor: bgcolor,
       body: _attendanceRecords == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : _attendanceRecords!.isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.no_accounts_rounded, color: Colors.grey, size: 40),
-                      SizedBox(height: 16),
-                      Text(
+                      const Icon(Icons.no_accounts_rounded, color: Colors.grey, size: 40),
+                      const SizedBox(height: 16),
+                      const Text(
                         'No Attendance Record Found',
                         style: TextStyle(
                             color: textcolor,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
@@ -87,12 +87,12 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(height: 24),
+                      const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text('Go Back'),
+                        child: const Text('Go Back'),
                         style: ElevatedButton.styleFrom(
                           primary: uddeshhyacolor, // Background color
                           onPrimary: textcolor, // Text color
@@ -100,7 +100,7 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.0), // Rounded corners
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
                         ),
                       ),
                     ],
@@ -155,7 +155,7 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
                                     contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                                     title: Text(
                                       entry.key,
-                                      style: TextStyle(color: Colors.white70),
+                                      style: const TextStyle(color: Colors.white70),
                                     ),
                                     trailing: Text(
                                       entry.value ? 'Present' : 'Absent',
@@ -183,13 +183,13 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Attendance percentages are not available.'),
                             ),
                           );
                         }
                       },
-                      child: Text('View Attendance Percentages'),
+                      child: const Text('View Attendance Percentages'),
                       style: ElevatedButton.styleFrom(
                         primary: uddeshhyacolor, // Background color
                         onPrimary: textcolor, // Text color
@@ -197,7 +197,7 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0), // Rounded corners
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
                       ),
                     ),
                   ],

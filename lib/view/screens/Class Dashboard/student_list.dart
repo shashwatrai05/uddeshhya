@@ -5,7 +5,6 @@ import 'package:uddeshhya/view/widgets/LiquidProgressIndicator.dart';
 import '../../../models/student.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/student_service.dart';
-import '../../../services/class_service.dart';
 import 'syllabus_page.dart';
 
 class StudentListScreen extends StatefulWidget {
@@ -20,6 +19,7 @@ class StudentListScreen extends StatefulWidget {
 class _StudentListScreenState extends State<StudentListScreen> {
   final StudentService _studentService = StudentService();
   final AuthService _authService = AuthService();
+  // ignore: unused_field
   late Future<List<StudentModel>> _studentsFuture;
   late Future<String> _userRole;
   String _selectedStandard = 'All'; // Default to 'All' to show all students

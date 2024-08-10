@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  // ignore: unused_field
   String? _errorMessage;
 
   void _login() async {
@@ -77,12 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Hey there,',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: textcolor,
@@ -123,8 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   prefixIcon: const Icon(Icons.email, color: Colors.white70),
-                  hintStyle: TextStyle(color: Colors.white60),
-                  labelStyle: TextStyle(color: Colors.white70),
+                  hintStyle: const TextStyle(color: Colors.white60),
+                  labelStyle: const TextStyle(color: Colors.white70),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(color: Colors.blueGrey[500]!),
@@ -158,8 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                   ),
-                  hintStyle: TextStyle(color: Colors.white60),
-                  labelStyle: TextStyle(color: Colors.white70),
+                  hintStyle: const TextStyle(color: Colors.white60),
+                  labelStyle: const TextStyle(color: Colors.white70),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(color: Colors.blueGrey[500]!),
@@ -193,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
+                    const Text(
                       'Don\'t have an account?',
                       style: TextStyle(color: Colors.white60, fontSize: 16),
                     ),

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:uddeshhya/services/expense_service.dart';
 import 'package:uddeshhya/models/expense.dart';
@@ -267,7 +265,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
             Expanded(
               child: Row(
                 children: [
-                  Icon(Icons.monetization_on, color: Colors.white70, size: 13,),
+                  const Icon(Icons.monetization_on, color: Colors.white70, size: 13,),
                   Text(
                     ' \₹${expense.amount}',
                     style: const TextStyle(
@@ -280,7 +278,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
             ),
             Row(
               children: [
-                Icon(Icons.date_range_rounded, color: Colors.white70, size: 13,),
+                const Icon(Icons.date_range_rounded, color: Colors.white70, size: 13,),
                 Text(
                   ' ${expense.date.toLocal().toString().split(' ')[0]}',
                   style: const TextStyle(
@@ -301,16 +299,16 @@ class _ExpensesPageState extends State<ExpensesPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.no_accounts_rounded, color: Colors.grey, size: 40),
-                  SizedBox(height: 16),
-                  Text(
+                  const Icon(Icons.no_accounts_rounded, color: Colors.grey, size: 40),
+                  const SizedBox(height: 16),
+                  const Text(
                     'No Expense Added',
                     style: TextStyle(
                         color: textcolor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.only(left:16.0, right: 16),
                     child: Text(
@@ -319,7 +317,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),
@@ -361,45 +359,6 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 },
               ),
             ),
-
-            // Padding(
-            //   padding: const EdgeInsets.only(top:8.0, bottom: 8.0, left: 16, right: 16),
-            //   child: FutureBuilder<String>(
-            //     future: _userRole,
-            //     builder: (context, snapshot) {
-            //       if (snapshot.connectionState == ConnectionState.waiting) {
-            //         return const SizedBox.shrink();
-            //       }
-            //       if (snapshot.hasError ||
-            //           !snapshot.hasData ||
-            //           snapshot.data != 'admin') {
-            //         return const SizedBox.shrink();
-            //       }
-            //       return ElevatedButton(
-            //         onPressed: () {
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //               builder: (context) => AdminTotalExpensePage(),
-            //             ),
-            //           );
-            //         },
-            //         child: const Text('See Remaining Bills',
-            //         style: const TextStyle(
-            //               fontSize: 16, fontWeight: FontWeight.bold, color: textcolor),
-            //         ),
-            //         style: ElevatedButton.styleFrom(
-            //           primary: uddeshhyacolor, // Updated background color
-            //           padding: const EdgeInsets.symmetric(vertical: 15),
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(12),
-            //           ),
-                      
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
           ],
         ),
       ),

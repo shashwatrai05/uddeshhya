@@ -15,7 +15,7 @@ class Header extends StatelessWidget {
     return Container(
       //height: MediaQuery.of(context).size.height*0.17,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [uddeshhyacolor, kUpperContainerColor],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -23,7 +23,7 @@ class Header extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +37,7 @@ class Header extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             //Uncomment and update this text if needed
             Text(
               subtitle,

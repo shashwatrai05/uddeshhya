@@ -72,10 +72,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 future: _userRole,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text('Loading Your Role......', style: TextStyle(color: Colors.tealAccent,fontSize: 16),);
+                    return const Text('Loading Your Role......', style: const TextStyle(color: Colors.tealAccent,fontSize: 16),);
                   } 
                   else if (snapshot.hasError) {
-                    return Text(
+                    return const Text(
                       'Role is not determined',
                       style: TextStyle(color: Colors.redAccent),
                     );
@@ -97,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: const Text('Logout',style: TextStyle(color: textcolor),),
                 style: ElevatedButton.styleFrom(
                   primary: uddeshhyacolor,
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

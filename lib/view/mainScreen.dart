@@ -1,12 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
 import 'package:uddeshhya/view/screens/activity_planner_screen.dart';
-import 'package:uddeshhya/view/screens/Class%20Dashboard/add_syllabus.dart';
-import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_history.dart';
-import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_screen.dart';
-import 'package:uddeshhya/view/screens/Class%20Dashboard/class_management.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/home_screen.dart';
 import 'package:uddeshhya/view/screens/expense_page.dart';
 import 'package:uddeshhya/view/screens/profilepage.dart';
@@ -59,6 +54,7 @@ class _MainPageState extends State<MainPage> {
   backgroundColor: Colors.transparent,
   leading: Padding(
     padding: const EdgeInsets.only(left: 16.0),
+    // ignore: sized_box_for_whitespace
     child: Container(
       height: 10,  // Adjust this value to control the height of the container
       child: Image.asset(

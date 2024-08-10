@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uddeshhya/view/constants/theme.dart'; // Ensure this is where `bgcolor` is defined
 import 'package:uddeshhya/view/widgets/LiquidProgressIndicator.dart';
 import '../../../models/class.dart';
@@ -52,9 +51,9 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
         backgroundColor: Colors.grey[900], // Dark background color
         elevation: 8, // Enhanced shadow effect
         title:
-            Text(
+            const Text(
               'Add New Class',
-              style: TextStyle(
+              style: const TextStyle(
                 color:Colors.tealAccent, // Primary color
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -69,11 +68,11 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
               hintText: 'Enter class name',
               hintStyle: TextStyle(color: Colors.grey[500]), // Subtle hint color
               border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.teal),
+                borderSide: const BorderSide(color: Colors.teal),
                 borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.teal, width: 2.0),
+                borderSide: const BorderSide(color: Colors.teal, width: 2.0),
                 borderRadius: BorderRadius.circular(8),
               ),
               enabledBorder: OutlineInputBorder(
@@ -103,7 +102,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                 borderRadius: BorderRadius.circular(6), // Rounded button
               ),
               elevation: 5, // Button shadow
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Button padding
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Button padding
             ),
             child: const Text(
               'Add',
@@ -144,7 +143,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
         elevation: 10,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -160,21 +159,21 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error, color: uddeshhyacolor, size: 50),
-                  SizedBox(height: 16),
-                  Text(
+                  const Icon(Icons.error, color: uddeshhyacolor, size: 50),
+                  const SizedBox(height: 16),
+                  const Text(
                     'Oops! Something went wrong.',
                     style: TextStyle(
                         color: textcolor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Go Back'),
+                      child: const Text('Go Back'),
                       style: ElevatedButton.styleFrom(
                         primary: uddeshhyacolor, // Background color
                         onPrimary: textcolor, // Text color
@@ -183,7 +182,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                           borderRadius:
                               BorderRadius.circular(12.0), // Rounded corners
                         ),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12), // Padding
                       )),
                 ],
@@ -196,27 +195,27 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.no_meeting_room_rounded, color: Colors.grey, size: 40),
-                  SizedBox(height: 16),
-                  Text(
+                  const Icon(Icons.no_meeting_room_rounded, color: Colors.grey, size: 40),
+                  const SizedBox(height: 16),
+                  const Text(
                     'No Classes Available',
                     style: TextStyle(
                         color: textcolor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     'It looks like there are no classes available at the moment.',
                     style: TextStyle(color: Colors.grey.shade300, fontSize: 14),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Go Back'),
+                    child: const Text('Go Back'),
                     style: ElevatedButton.styleFrom(
                         primary: uddeshhyacolor, // Background color
                         onPrimary: textcolor, // Text color
@@ -225,7 +224,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                           borderRadius:
                               BorderRadius.circular(12.0), // Rounded corners
                         ),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12), // Padding
                       )
                   ),
@@ -241,7 +240,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
             itemBuilder: (context, index) {
               final classModel = classes[index];
               return Card(
-                margin: EdgeInsets.only(top: 10, bottom: 10),
+                margin: const EdgeInsets.only(top: 10, bottom: 10),
                 color: Colors.grey[850],
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -249,10 +248,10 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                 ),
                 child: ListTile(
                   //contentPadding: const EdgeInsets.all(2.0),
-                  leading: Icon(Icons.group, color: textcolor),
+                  leading: const Icon(Icons.group, color: textcolor),
                   title: Text(
                     classModel.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                         color: textcolor),
@@ -263,13 +262,13 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                       future: _classService.getStudents(classModel.id),
                       builder: (context, studentSnapshot) {
                         if (studentSnapshot.connectionState == ConnectionState.waiting) {
-                          return Text('Loading Students....', style: const TextStyle(color: Colors.white60, fontSize: 14),);
+                          return const Text('Loading Students....', style: TextStyle(color: Colors.white60, fontSize: 14),);
                         }
                         if (studentSnapshot.hasError) {
-                          return Text('Unable to load students', style: const TextStyle(color: Colors.white60, fontSize: 14));
+                          return const Text('Unable to load students', style: TextStyle(color: Colors.white60, fontSize: 14));
                         }
                         if (!studentSnapshot.hasData || studentSnapshot.data!.isEmpty) {
-                          return Text('No students',style: const TextStyle(color: Colors.white60, fontSize: 14));
+                          return const Text('No students',style: TextStyle(color: Colors.white60, fontSize: 14));
                         }
                     
                         final students = studentSnapshot.data!;
@@ -317,20 +316,20 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
           future: _userRole,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
             if (snapshot.hasError ||
                 !snapshot.hasData ||
                 snapshot.data != 'admin') {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
             return FloatingActionButton.extended(
               onPressed: _addClass,
-              label: Text(
+              label: const Text(
                 'Add Class',
                 style: TextStyle(color: textcolor),
               ),
-              icon: Icon(
+              icon: const Icon(
                 Icons.add,
                 color: textcolor,
               ),

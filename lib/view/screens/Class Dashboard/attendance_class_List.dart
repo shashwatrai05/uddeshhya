@@ -40,7 +40,7 @@ class _AttendanceClassListScreenState extends State<AttendanceClassListScreen> {
         elevation: 10,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -56,7 +56,7 @@ class _AttendanceClassListScreenState extends State<AttendanceClassListScreen> {
               color: Colors.grey[900],
               borderRadius: BorderRadius.circular(12.0),
               boxShadow: [
-                BoxShadow(
+                const BoxShadow(
                   color: Colors.black54,
                   blurRadius: 8.0,
                   offset: Offset(0, 4),
@@ -73,7 +73,7 @@ class _AttendanceClassListScreenState extends State<AttendanceClassListScreen> {
                   fontSize: 18.0,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_ios, color: textcolor),
+              trailing: const Icon(Icons.arrow_forward_ios, color: textcolor),
               onTap: () {
                 Navigator.push(
                   context,

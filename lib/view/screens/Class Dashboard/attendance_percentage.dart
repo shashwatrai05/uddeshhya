@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../models/attendance.dart';
 import '../../constants/theme.dart';
 
 class AttendancePercentagesScreen extends StatefulWidget {
@@ -22,9 +21,9 @@ class _AttendancePercentagesScreenState extends State<AttendancePercentagesScree
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Attendance Percentages',
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: textcolor,
           ),
@@ -32,7 +31,7 @@ class _AttendancePercentagesScreenState extends State<AttendancePercentagesScree
         elevation: 15,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textcolor),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -49,15 +48,15 @@ class _AttendancePercentagesScreenState extends State<AttendancePercentagesScree
                 });
               },
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search, color: Colors.tealAccent),
+                prefixIcon: const Icon(Icons.search, color: Colors.tealAccent),
                 hintText: 'Search by student name',
                 hintStyle: TextStyle(color: Colors.grey[400]),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.tealAccent),
+                  borderSide: const BorderSide(color: Colors.tealAccent),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.tealAccent, width: 2.0),
+                  borderSide: const BorderSide(color: Colors.tealAccent, width: 2.0),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 enabledBorder: OutlineInputBorder(
@@ -76,7 +75,7 @@ class _AttendancePercentagesScreenState extends State<AttendancePercentagesScree
                       color: Colors.grey[900],
                       borderRadius: BorderRadius.circular(8.0),
                       boxShadow: [
-                        BoxShadow(
+                        const BoxShadow(
                           color: Colors.black54,
                           blurRadius: 4.0,
                           offset: Offset(0, 2),
@@ -87,11 +86,11 @@ class _AttendancePercentagesScreenState extends State<AttendancePercentagesScree
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                       title: Text(
                         entry.key,
-                        style: TextStyle(color: Colors.white70),
+                        style: const TextStyle(color: Colors.white70),
                       ),
                       trailing: Text(
                         '${entry.value.toStringAsFixed(2)}%',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       tileColor: Colors.grey[850],
                       shape: RoundedRectangleBorder(

@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/add_syllabus.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_class_List.dart';
-import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_history.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_screen.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/class_management.dart';
 

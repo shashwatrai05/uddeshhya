@@ -6,6 +6,7 @@ import 'package:uddeshhya/view/constants/theme.dart';
 import 'package:uddeshhya/view/widgets/header.dart';
 import '../../services/auth_service.dart';
 import 'admin_expense_page.dart';
+import 'package:emailjs/emailjs.dart' as emailjs;
 
 class ExpensesPage extends StatefulWidget {
   @override
@@ -87,7 +88,9 @@ class _ExpensesPageState extends State<ExpensesPage> {
 
   void _addExpense() async {
     final String title = _titleController.text;
+    final String email= FirebaseAuth.instance.currentUser?.email ?? 'Unknown';
     final double amount = double.tryParse(_amountController.text) ?? 0.0;
+    final String formattedDate = _selectedDate.toLocal().toString().split(' ')[0];
 
     if (title.isNotEmpty && amount > 0) {
       final expenseModel = ExpenseModel(
@@ -110,7 +113,16 @@ class _ExpensesPageState extends State<ExpensesPage> {
         _isLoading = true;
         _loadExpenses();
       });
+
+      var templateParams = {
+      'email': email,
+      'title': title,
+      'amount': amount.toString(),
+      'date': formattedDate,
+    };
+    sendEmail(context, templateParams);
     }
+
   }
 
   @override
@@ -339,7 +351,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AdminExpensesPage(),
+                          builder: (context) => AdminExpensePage(),
                         ),
                       );
                     },
@@ -364,4 +376,35 @@ class _ExpensesPageState extends State<ExpensesPage> {
       ),
     );
   }
+   Future<bool> sendEmail(BuildContext context, dynamic templateParams) async {
+    try {
+      await emailjs.send(
+        'service_b5zy7td',
+        'template_mbig9ko',
+        templateParams,
+        const emailjs.Options(
+          publicKey: 'ojbaNzqhe9oOBqSsQ',
+          privateKey: 'EIsvo5fAcOV0XrEAI_AQh',
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email sent successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      print('SUCCESS!');
+      return true;
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to send email. Please try again later.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      print('Error found: $error');
+      return false;
+    }
+  }
 }
+

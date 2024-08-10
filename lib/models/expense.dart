@@ -10,27 +10,29 @@ class ExpenseModel {
   ExpenseModel({
     required this.id,
     required this.title,
-    required this.date,
     required this.amount,
+    required this.date,
     required this.userEmail,
   });
 
-  factory ExpenseModel.fromMap(Map<String, dynamic> map) {
+  // Convert a Firestore document into an ExpenseModel instance
+  factory ExpenseModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
     return ExpenseModel(
-      id: map['id'],
-      title: map['title'],
-      amount: map['amount'],
-      date: (map['date'] as Timestamp).toDate(), // Convert Timestamp to DateTime
-      userEmail: map['userEmail'],
+      id: data['id'] ?? '',
+      title: data['title'] ?? '',
+      amount: data['amount']?.toDouble() ?? 0.0,
+      date: (data['date'] as Timestamp).toDate(),
+      userEmail: data['userEmail']??'',
     );
   }
 
+  // Convert an ExpenseModel instance to a Firestore document
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'title': title,
       'amount': amount,
-      'date': date, // Save DateTime
+      'date': date,
       'userEmail': userEmail,
     };
   }

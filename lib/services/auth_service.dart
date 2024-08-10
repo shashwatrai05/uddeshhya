@@ -26,12 +26,24 @@ class AuthService {
       return userCredential.user;
     } catch (e) {
       print('SignIn Error: $e');
-      return null;
+      throw(e);
+     // return null;
     }
+  }
+
+  Future<bool> _isEmailAllowed(String email) async {
+    final doc = await _db.collection('allowed_emails').doc(email).get();
+    return doc.exists;
   }
 
   Future<User?> signUpWithEmailAndPassword(String email, String password, String role) async {
     try {
+      final isAllowed = await _isEmailAllowed(email);
+      if (!isAllowed) {
+        print('Email is not allowed');
+        throw Exception('Email is not allowed');
+      }
+
       final userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       await _db.collection('users').doc(userCredential.user!.uid).set({
         'email': email,
@@ -40,7 +52,8 @@ class AuthService {
       return userCredential.user;
     } catch (e) {
       print('SignUp Error: $e');
-      return null;
+      throw(e);
+      //return null;
     }
   }
 

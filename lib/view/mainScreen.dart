@@ -1,11 +1,14 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:uddeshhya/view/constants/theme.dart';
 import 'package:uddeshhya/view/screens/activity_planner_screen.dart';
-import 'package:uddeshhya/view/screens/add_syllabus.dart';
-import 'package:uddeshhya/view/screens/attendance_history.dart';
-import 'package:uddeshhya/view/screens/attendance_screen.dart';
-import 'package:uddeshhya/view/screens/class_management.dart';
-import 'package:uddeshhya/view/screens/home_screen.dart';
+import 'package:uddeshhya/view/screens/Class%20Dashboard/add_syllabus.dart';
+import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_history.dart';
+import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_screen.dart';
+import 'package:uddeshhya/view/screens/Class%20Dashboard/class_management.dart';
+import 'package:uddeshhya/view/screens/Class%20Dashboard/home_screen.dart';
+import 'package:uddeshhya/view/screens/expense_page.dart';
 import 'package:uddeshhya/view/screens/profilepage.dart';
 
 class MainPage extends StatefulWidget {
@@ -28,11 +31,12 @@ class _MainPageState extends State<MainPage> {
     tabWidgets = <Widget>[
       HomeScreen(),
       //ClassManagementScreen(),
-      AttendanceScreen(), // Replace with your actual placeholder widget or screen
-      AttendanceHistoryScreen(),
-      ProfilePage(),
+      ActivityPlannerScreen(), // Replace with your actual placeholder widget or screen
+      //AttendanceHistoryScreen(),
+      
       //ActivityPlannerScreen()
-      AddSyllabusScreen()
+      ExpensesPage(),
+      ProfilePage(),
       // Add more screens here
     ];
   }
@@ -41,46 +45,34 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: Text('Class Management'),
-      //   actions: <Widget>[
-      //     FutureBuilder<String>(
-      //       future: _userRole,
-      //       builder: (context, snapshot) {
-      //         if (snapshot.connectionState == ConnectionState.waiting) {
-      //           return Center(child: CircularProgressIndicator());
-      //         }
-      //         if (snapshot.hasError || !snapshot.hasData || snapshot.data != 'admin') {
-      //           return SizedBox.shrink();
-      //         }
-      //         return IconButton(
-      //           icon: Icon(Icons.add),
-      //           onPressed: _addClass,
-      //         );
-      //       },
-      //     ),
-      //     IconButton(onPressed: (){
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => AttendanceScreen(),
-      //         ),
-      //       );
-      //     } , icon: Icon(Icons.abc)),
-      //     IconButton(onPressed: (){
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => AttendanceHistoryScreen(),
-      //         ),
-      //       );
-      //     } , icon: Icon(Icons.abc))
-      //   ],
-      // ),
+       backgroundColor: kblackcolor,
+      //backgroundColor: Colors.transparent,
+   appBar: AppBar(
+  title: const Text(
+    'UDDESHHYA',
+    style: TextStyle(
+      fontWeight: FontWeight.w700,
+      color: textcolor,
+    ),
+  ),
+  //elevation: 15,
+  backgroundColor: Colors.transparent,
+  leading: Padding(
+    padding: const EdgeInsets.only(left: 16.0),
+    child: Container(
+      height: 10,  // Adjust this value to control the height of the container
+      child: Image.asset(
+        'assets/logo.png',
+        height: 10,  // Adjust this value to control the height of the image
+        width: 10,   // Optionally adjust this value to control the width of the image
+      ),
+    ),
+  ),
+),
+
       body: tabWidgets!.elementAt(_selectedIndex),
       bottomNavigationBar: CurvedNavigationBar(
-        //backgroundColor: ecellcolor,
+        backgroundColor: uddeshhyacolor,
         items: const <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -89,38 +81,38 @@ class _MainPageState extends State<MainPage> {
               Text('Class', style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.info, size: 25, color: Colors.white),
-              Text('Attendance',
-                  style: TextStyle(color: Colors.white, fontSize: 12)),
-            ],
-          ),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Icon(Icons.info, size: 25, color: Colors.white),
+          //     Text('Attendance',
+          //         style: TextStyle(color: Colors.white, fontSize: 12)),
+          //   ],
+          // ),
           
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.miscellaneous_services_rounded,
+              Icon(Icons.local_activity_rounded,
                   size: 25, color: Colors.white),
-              Text('History', style: TextStyle(color: Colors.white, fontSize: 12)),
+              Text('Activities', style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
 
             Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.person,
+              Icon(Icons.currency_rupee_rounded,
                   size: 25, color: Colors.white),
-              Text('History', style: TextStyle(color: Colors.white, fontSize: 12)),
+              Text('Expenses', style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.book,
+              Icon(Icons.person_2_rounded,
                   size: 25, color: Colors.white),
-              Text('Syllabus', style: TextStyle(color: Colors.white, fontSize: 12)),
+              Text('Profile', style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
         ],
@@ -134,7 +126,7 @@ class _MainPageState extends State<MainPage> {
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 300),
         height: 60,
-        color: Colors.black.withOpacity(0.8),
+        color: Colors.black.withOpacity(0.95),
         buttonBackgroundColor: Colors.transparent,
       ),
     );

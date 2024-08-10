@@ -5,7 +5,7 @@ const Color bgcolor = Color.fromRGBO(16, 16, 20, 1);
 const Color blue = Color.fromRGBO(66, 133, 244, 1);
 const Color textcolor = Color(0xffffffff);
 const Color kUpperContainerColor = Color(0xff1E1E1E);
-const Color kblack = Color.fromRGBO(0, 0, 0, 1);
+const Color kblackcolor = Color.fromRGBO(0, 0, 0, 1);
 const Color uddeshhyacolor = Color.fromRGBO(230, 71, 70, 1);
 
 //fontsizes

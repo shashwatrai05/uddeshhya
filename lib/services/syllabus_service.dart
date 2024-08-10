@@ -12,9 +12,23 @@ class SyllabusService {
         return SyllabusModel.fromMap(data);
       }).toList();
     } catch (e) {
-      // Handle errors (e.g., network issues, Firestore issues)
       print('Error getting syllabi: $e');
       return [];
+    }
+  }
+
+  Future<SyllabusModel?> getSyllabus(String standard) async {
+    try {
+      final docSnapshot = await _firestore.collection('syllabus').doc(standard).get();
+      if (docSnapshot.exists) {
+        final data = docSnapshot.data() as Map<String, dynamic>;
+        return SyllabusModel.fromMap(data);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error getting syllabus: $e');
+      return null;
     }
   }
 
@@ -22,7 +36,6 @@ class SyllabusService {
     try {
       await _firestore.collection('syllabus').doc(syllabus.standard).set(syllabus.toMap());
     } catch (e) {
-      // Handle errors (e.g., network issues, Firestore issues)
       print('Error adding syllabus: $e');
     }
   }
@@ -31,7 +44,6 @@ class SyllabusService {
     try {
       await _firestore.collection('syllabus').doc(syllabus.standard).update(syllabus.toMap());
     } catch (e) {
-      // Handle errors (e.g., network issues, Firestore issues)
       print('Error updating syllabus: $e');
     }
   }

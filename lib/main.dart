@@ -29,20 +29,6 @@ void main() async {
 }
 
 
-// class MyApp extends StatelessWidget {
-//   final AuthService _auth = AuthService();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: LoginScreen(authService: _auth),
-//       routes: {
-//         SignUpScreen.routeName: (context) => SignUpScreen(authService: _auth),
-//       },
-//     );
-//   }
-// }
 
 class MyApp extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -67,6 +53,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         SignUpScreen.routeName: (context) => SignUpScreen(authService: _auth),
+        LoginScreen.routeName:(context)=> LoginScreen(authService: _auth)
       },
     );
   }

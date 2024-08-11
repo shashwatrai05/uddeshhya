@@ -55,8 +55,8 @@ class _AttendanceClassListScreenState extends State<AttendanceClassListScreen> {
             decoration: BoxDecoration(
               color: Colors.grey[900],
               borderRadius: BorderRadius.circular(12.0),
-              boxShadow: [
-                const BoxShadow(
+              boxShadow: const [
+                BoxShadow(
                   color: Colors.black54,
                   blurRadius: 8.0,
                   offset: Offset(0, 4),

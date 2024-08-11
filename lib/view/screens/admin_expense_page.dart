@@ -63,28 +63,28 @@ class _AdminExpensePageState extends State<AdminExpensePage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('All Expenses'),
+        title: const Text('All Expenses'),
         backgroundColor: Colors.grey[900],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : _userExpenses.isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.no_accounts_rounded, color: Colors.grey, size: 40),
-                      SizedBox(height: 16),
-                      Text(
+                      const Icon(Icons.no_accounts_rounded, color: Colors.grey, size: 40),
+                      const SizedBox(height: 16),
+                      const Text(
                         'No Expenses Available',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           'It looks like there are no expenses available at the moment.',
                           style: TextStyle(color: Colors.grey.shade300, fontSize: 14),
@@ -101,11 +101,11 @@ class _AdminExpensePageState extends State<AdminExpensePage> {
                     return ExpansionTile(
                       title: Text(
                         email,
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                       children: expenses.map((expense) {
                         return Container(
-                          margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                           decoration: BoxDecoration(
                             color: Colors.grey[850],
                             borderRadius: BorderRadius.circular(12),
@@ -114,35 +114,35 @@ class _AdminExpensePageState extends State<AdminExpensePage> {
                                 color: Colors.black.withOpacity(0.2),
                                 spreadRadius: 1,
                                 blurRadius: 6,
-                                offset: Offset(0, 2),
+                                offset: const Offset(0, 2),
                               ),
                             ],
                           ),
                           child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                             title: Text(
                               expense.title,
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                             ),
                             subtitle: Row(
                               children: [
                                 Expanded(
                                   child: Row(
                                     children: [
-                                      Icon(Icons.monetization_on, color: Colors.white70, size: 13),
+                                      const Icon(Icons.monetization_on, color: Colors.white70, size: 13),
                                       Text(
                                         ' \₹${expense.amount}',
-                                        style: TextStyle(color: Colors.white70, fontSize: 13),
+                                        style: const TextStyle(color: Colors.white70, fontSize: 13),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Row(
                                   children: [
-                                    Icon(Icons.date_range_rounded, color: Colors.white70, size: 13),
+                                    const Icon(Icons.date_range_rounded, color: Colors.white70, size: 13),
                                     Text(
                                       ' ${expense.date.toLocal().toString().split(' ')[0]}',
-                                      style: TextStyle(color: Colors.white70, fontSize: 13),
+                                      style: const TextStyle(color: Colors.white70, fontSize: 13),
                                     ),
                                   ],
                                 ),

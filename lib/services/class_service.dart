@@ -9,6 +9,7 @@ class ClassService {
 
   Future<List<ClassModel>> getClasses() async {
     final querySnapshot = await _firestore.collection('classes').get();
+    // ignore: unnecessary_cast
     return querySnapshot.docs.map((doc) => ClassModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
   }
 
@@ -22,6 +23,7 @@ class ClassService {
 
   Future<List<StudentModel>> getStudents(String classId) async {
     final querySnapshot = await _firestore.collection('classes').doc(classId).collection('students').get();
+    // ignore: unnecessary_cast
     return querySnapshot.docs.map((doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
   }
 }

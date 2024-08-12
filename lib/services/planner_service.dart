@@ -9,6 +9,7 @@ class ActivityService {
 
   Future<List<ActivityModel>> getActivities() async {
     final querySnapshot = await _firestore.collection('activities').get();
+    // ignore: unnecessary_cast
     return querySnapshot.docs.map((doc) => ActivityModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
   }
 

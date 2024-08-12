@@ -8,7 +8,10 @@ import '../../models/planner.dart';
 import '../../services/auth_service.dart';
 
 class ActivityPlannerScreen extends StatefulWidget {
+  const ActivityPlannerScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ActivityPlannerScreenState createState() => _ActivityPlannerScreenState();
 }
 
@@ -33,7 +36,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
     final dateController =
         TextEditingController(text: DateFormat.yMd().format(selectedDate));
 
-    Future<void> _selectDate(BuildContext context) async {
+    Future<void> selectDate(BuildContext context) async {
       final DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -49,10 +52,10 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
               ),
               dialogBackgroundColor:
                   Colors.black, // Background color of the date picker
-              dividerColor: Colors.teal.shade700, // Color of the divider
+              dividerColor: uddeshhyacolor, // Color of the divider
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: Colors.teal, // Color of the text buttons
+                  foregroundColor: uddeshhyacolor, // Color of the text buttons
                 ),
               ),
               // Optional: Adjust colors for other elements if needed
@@ -82,7 +85,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
           title: Text(
             isEditing ? 'Edit Activity' : 'Add New Activity',
             style: const TextStyle(
-              color: Colors.tealAccent,
+              color: uddeshhyacolor,
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
@@ -101,24 +104,24 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                       hintText: 'Enter activity title',
                       hintStyle: TextStyle(color: Colors.grey[500]),
                       border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.teal),
+                        borderSide: const BorderSide(color: uddeshhyacolor),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                            const BorderSide(color: Colors.teal, width: 2.0),
+                            const BorderSide(color: uddeshhyacolor, width: 2.0),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: Colors.teal.withOpacity(0.5)),
+                            BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
                   const SizedBox(height: 12),
                   GestureDetector(
-                    onTap: () => _selectDate(context),
+                    onTap: () => selectDate(context),
                     child: AbsorbPointer(
                       child: TextField(
                         controller: dateController,
@@ -126,17 +129,17 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                           hintText: 'Select date (MM/DD/YYYY)',
                           hintStyle: TextStyle(color: Colors.grey[500]),
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.teal),
+                            borderSide: const BorderSide(color: uddeshhyacolor),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                                color: Colors.teal, width: 2.0),
+                                color: uddeshhyacolor, width: 2.0),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.teal.withOpacity(0.5)),
+                            borderSide: BorderSide(
+                                color: uddeshhyacolor.withOpacity(0.5)),
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
@@ -158,12 +161,12 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                            const BorderSide(color: Colors.teal, width: 2.0),
+                            const BorderSide(color: uddeshhyacolor, width: 2.0),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: Colors.teal.withOpacity(0.5)),
+                            BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
@@ -175,7 +178,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(
-                primary: Colors.tealAccent,
+                foregroundColor: uddeshhyacolor,
               ),
               child: const Text(
                 'Cancel',
@@ -187,7 +190,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.teal,
+                backgroundColor: uddeshhyacolor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
                 ),
@@ -201,21 +204,27 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                     color: Colors.white, fontWeight: FontWeight.bold),
               ),
               onPressed: () async {
-                final newActivity = ActivityModel(
-                  id: isEditing ? activity!.id : DateTime.now().toString(),
-                  title: titleController.text,
-                  date: selectedDate,
-                  remark: remarkController.text,
-                );
-                if (isEditing) {
-                  await _activityService.updateActivity(newActivity);
+                if (titleController.text.isEmpty ||
+                    remarkController.text.isEmpty) {
+                  Navigator.of(context).pop();
                 } else {
-                  await _activityService.addActivity(newActivity);
+                  final newActivity = ActivityModel(
+                    id: isEditing ? activity.id : DateTime.now().toString(),
+                    title: titleController.text,
+                    date: selectedDate,
+                    remark: remarkController.text,
+                  );
+                  if (isEditing) {
+                    await _activityService.updateActivity(newActivity);
+                  } else {
+                    await _activityService.addActivity(newActivity);
+                  }
+                  setState(() {
+                    _activitiesFuture = _activityService.getActivities();
+                  });
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
                 }
-                setState(() {
-                  _activitiesFuture = _activityService.getActivities();
-                });
-                Navigator.of(context).pop();
               },
             ),
           ],
@@ -310,7 +319,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                                     color: Colors.white70),
                                 const SizedBox(width: 8.0),
                                 Text(
-                                  '${DateFormat.yMd().format(activity.date)}',
+                                  DateFormat.yMd().format(activity.date),
                                   style: const TextStyle(
                                     color: Colors.white70,
                                     fontWeight: FontWeight.bold,
@@ -326,8 +335,8 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                               decoration: BoxDecoration(
                                 color: Colors.grey[850],
                                 borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  const BoxShadow(
+                                boxShadow: const [
+                                  BoxShadow(
                                     color: Colors.black54,
                                     blurRadius: 6.0,
                                     offset: Offset(0, 4),
@@ -353,7 +362,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                                 subtitle: Padding(
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: Text(
-                                    '${activity.remark}',
+                                    activity.remark,
                                     style: const TextStyle(
                                       color: Colors.white54,
                                       fontSize: 14.0,
@@ -416,7 +425,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
           ),
         ),
         floatingActionButton: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: FutureBuilder<String>(
             future: _userRole,
             builder: (context, snapshot) {

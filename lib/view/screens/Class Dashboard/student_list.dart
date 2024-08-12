@@ -10,9 +10,10 @@ import 'syllabus_page.dart';
 class StudentListScreen extends StatefulWidget {
   final String classId;
 
-  StudentListScreen({required this.classId});
+  const StudentListScreen({super.key, required this.classId});
 
   @override
+  // ignore: library_private_types_in_public_api
   _StudentListScreenState createState() => _StudentListScreenState();
 }
 
@@ -50,7 +51,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
   }
 
   Future<Map<String, String?>> _showAddStudentDialog() async {
-    final TextEditingController _nameController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
     String? selectedStandard = 'Nursery';
 
     final result = await showDialog<Map<String, String?>>(
@@ -70,7 +71,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                   Text(
                     'Add New Student',
                     style: TextStyle(
-                      color: Colors.tealAccent,
+                      color: uddeshhyacolor,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -81,25 +82,28 @@ class _StudentListScreenState extends State<StudentListScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextField(
-                    controller: _nameController,
+                    controller: nameController,
                     style: const TextStyle(color: textcolor),
                     decoration: InputDecoration(
                       hintText: 'Enter student name',
                       hintStyle: TextStyle(color: Colors.grey[400]),
                       border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.tealAccent),
+                        borderSide: const BorderSide(color: uddeshhyacolor),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
-                            const BorderSide(color: Colors.tealAccent, width: 2.0),
+                            const BorderSide(color: uddeshhyacolor, width: 2.0),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Colors.tealAccent.withOpacity(0.5)),
+                        borderSide:
+                            BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      // errorText: _nameController.text.isEmpty
+                      //     ? 'Name cannot be empty'
+                      //     : null,
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -120,12 +124,12 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child:
-                            Text(value, style: const TextStyle(color: Colors.white)),
+                        child: Text(value,
+                            style: const TextStyle(color: Colors.white)),
                       );
                     }).toList(),
                     dropdownColor: Colors.grey[900], // Match dark background
-                    iconEnabledColor: Colors.tealAccent, // Icon color
+                    iconEnabledColor: uddeshhyacolor, // Icon color
                   ),
                 ],
               ),
@@ -142,7 +146,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.tealAccent, // Button background color
+                    backgroundColor: uddeshhyacolor, // Button background color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -153,13 +157,18 @@ class _StudentListScreenState extends State<StudentListScreen> {
                   child: const Text(
                     'Add',
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
+                        color: textcolor, fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop({
-                      'name': _nameController.text,
-                      'standard': selectedStandard,
-                    });
+                    if (nameController.text.isNotEmpty) {
+                      Navigator.of(context).pop({
+                        'name': nameController.text,
+                        'standard': selectedStandard,
+                      });
+                    } else {
+                      // Show an error message if the name is empty
+                      Navigator.of(context).pop();
+                    }
                   },
                 ),
               ],
@@ -215,20 +224,26 @@ class _StudentListScreenState extends State<StudentListScreen> {
                         _searchQuery = query;
                       });
                     },
+                    style: const TextStyle(color: textcolor),
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search, color: Colors.tealAccent),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 12.0),
+                      prefixIcon:
+                          const Icon(Icons.search, color: uddeshhyacolor),
                       hintText: 'Search by name',
                       hintStyle: TextStyle(color: Colors.grey[400]),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.tealAccent),
+                        borderSide: const BorderSide(color: uddeshhyacolor),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.tealAccent, width: 2.0),
+                        borderSide:
+                            const BorderSide(color: uddeshhyacolor, width: 1.5),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.tealAccent.withOpacity(0.5)),
+                        borderSide:
+                            BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
@@ -253,18 +268,19 @@ class _StudentListScreenState extends State<StudentListScreen> {
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value, style: TextStyle(color: Colors.white)),
+                      child: Text(value,
+                          style: const TextStyle(color: Colors.white)),
                     );
                   }).toList(),
                   dropdownColor: Colors.grey[900], // Match dark background
-                  iconEnabledColor: Colors.tealAccent, // Icon color
+                  iconEnabledColor: uddeshhyacolor, // Icon color
                 ),
               ],
             ),
           ),
           Expanded(
             child: FutureBuilder<List<StudentModel>>(
-              future:  _fetchFilteredStudents(),
+              future: _fetchFilteredStudents(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -275,7 +291,8 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.error, color: uddeshhyacolor, size: 50),
+                        const Icon(Icons.error,
+                            color: uddeshhyacolor, size: 50),
                         const SizedBox(height: 16),
                         const Text(
                           'Oops! Something went wrong.',
@@ -289,18 +306,18 @@ class _StudentListScreenState extends State<StudentListScreen> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: const Text('Go Back'),
                             style: ElevatedButton.styleFrom(
-                              primary: uddeshhyacolor, // Background color
-                              onPrimary: textcolor, // Text color
+                              foregroundColor: textcolor,
+                              backgroundColor: uddeshhyacolor, // Text color
                               elevation: 5, // Shadow depth
                               shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(12.0), // Rounded corners
+                                borderRadius: BorderRadius.circular(
+                                    12.0), // Rounded corners
                               ),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 12), // Padding
-                            )),
+                            ),
+                            child: const Text('Go Back')),
                       ],
                     ),
                   );
@@ -310,7 +327,8 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.no_accounts_rounded, color: Colors.grey, size: 40),
+                        const Icon(Icons.no_accounts_rounded,
+                            color: Colors.grey, size: 40),
                         const SizedBox(height: 16),
                         const Text(
                           'No Students Added',
@@ -324,8 +342,8 @@ class _StudentListScreenState extends State<StudentListScreen> {
                           padding: const EdgeInsets.only(left: 16.0, right: 16),
                           child: Text(
                             'It looks like there are no Students in this class at the moment.',
-                            style:
-                                TextStyle(color: Colors.grey.shade300, fontSize: 14),
+                            style: TextStyle(
+                                color: Colors.grey.shade300, fontSize: 14),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -334,18 +352,18 @@ class _StudentListScreenState extends State<StudentListScreen> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: const Text('Go Back'),
                             style: ElevatedButton.styleFrom(
-                              primary: uddeshhyacolor, // Background color
-                              onPrimary: textcolor, // Text color
+                              foregroundColor: textcolor,
+                              backgroundColor: uddeshhyacolor, // Text color
                               elevation: 5, // Shadow depth
                               shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(12.0), // Rounded corners
+                                borderRadius: BorderRadius.circular(
+                                    12.0), // Rounded corners
                               ),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 12), // Padding
-                            )),
+                            ),
+                            child: const Text('Go Back')),
                       ],
                     ),
                   );
@@ -382,20 +400,44 @@ class _StudentListScreenState extends State<StudentListScreen> {
                         ],
                       ),
                       onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => SyllabusPage(
+                        //       student: student,
+                        //       classId: widget.classId,
+                        //     ),
+                        //   ),
+                        // );
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => SyllabusPage(
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    SyllabusPage(
                               student: student,
                               classId: widget.classId,
-                            ),
+                            ), // Replace with your page
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              var begin = const Offset(1.0, 0.0);
+                              var end = Offset.zero;
+                              var curve = Curves.easeInOut;
+                              var tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
                           ),
                         );
                       },
                       trailing: FutureBuilder<String>(
                         future: _userRole,
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const SizedBox.shrink();
                           }
                           if (snapshot.hasError ||
@@ -405,7 +447,8 @@ class _StudentListScreenState extends State<StudentListScreen> {
                           }
                           return IconButton(
                             icon: const Icon(Icons.delete,
-                                color: Colors.redAccent), // Icon color for visibility
+                                color: Colors
+                                    .redAccent), // Icon color for visibility
                             onPressed: () async {
                               await _studentService.deleteStudent(
                                   widget.classId, student.id);

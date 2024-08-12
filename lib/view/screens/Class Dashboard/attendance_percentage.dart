@@ -4,18 +4,24 @@ import '../../constants/theme.dart';
 class AttendancePercentagesScreen extends StatefulWidget {
   final Map<String, double> attendancePercentages;
 
-  const AttendancePercentagesScreen({required this.attendancePercentages, Key? key}) : super(key: key);
+  const AttendancePercentagesScreen(
+      {required this.attendancePercentages, Key? key})
+      : super(key: key);
 
   @override
-  _AttendancePercentagesScreenState createState() => _AttendancePercentagesScreenState();
+  // ignore: library_private_types_in_public_api
+  _AttendancePercentagesScreenState createState() =>
+      _AttendancePercentagesScreenState();
 }
 
-class _AttendancePercentagesScreenState extends State<AttendancePercentagesScreen> {
+class _AttendancePercentagesScreenState
+    extends State<AttendancePercentagesScreen> {
   String _searchQuery = ''; // State variable for search query
 
   @override
   Widget build(BuildContext context) {
-    List<MapEntry<String, double>> _filteredEntries = widget.attendancePercentages.entries.where((entry) {
+    List<MapEntry<String, double>> filteredEntries =
+        widget.attendancePercentages.entries.where((entry) {
       return entry.key.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
 
@@ -23,7 +29,7 @@ class _AttendancePercentagesScreenState extends State<AttendancePercentagesScree
       appBar: AppBar(
         title: const Text(
           'Attendance Percentages',
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             color: textcolor,
           ),
@@ -41,60 +47,66 @@ class _AttendancePercentagesScreenState extends State<AttendancePercentagesScree
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              onChanged: (query) {
-                setState(() {
-                  _searchQuery = query;
-                });
-              },
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search, color: Colors.tealAccent),
-                hintText: 'Search by student name',
-                hintStyle: TextStyle(color: Colors.grey[400]),
-                border: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.tealAccent),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.tealAccent, width: 2.0),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.tealAccent.withOpacity(0.5)),
-                  borderRadius: BorderRadius.circular(8),
+            // Slimmer search bar
+            SizedBox(
+              height: 48, // Reduced height
+              child: TextField(
+                onChanged: (query) {
+                  setState(() {
+                    _searchQuery = query;
+                  });
+                },
+                style: const TextStyle(color: textcolor),
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search, color: uddeshhyacolor),
+                  hintText: 'Search by student name',
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  border: OutlineInputBorder(
+                    borderSide: const BorderSide(color: uddeshhyacolor),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: uddeshhyacolor, width: 1.5),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: uddeshhyacolor),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 12.0), // Adjust vertical padding
                 ),
               ),
             ),
             const SizedBox(height: 16),
+            // Constrained ListView with Flexible
             Expanded(
               child: ListView(
-                children: _filteredEntries.map((entry) {
+                //padding: const EdgeInsets.all(8.0),
+                children: filteredEntries.map((entry) {
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 4.0),
                     decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        const BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 4.0,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
+                      color: Colors.grey[850],
+                      borderRadius: BorderRadius.circular(2.0),
                     ),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16.0),
                       title: Text(
                         entry.key,
-                        style: const TextStyle(color: Colors.white70),
+                        style: const TextStyle(
+                            color: Colors.white70, fontWeight: FontWeight.bold),
                       ),
                       trailing: Text(
                         '${entry.value.toStringAsFixed(2)}%',
                         style: const TextStyle(color: Colors.white),
                       ),
-                      tileColor: Colors.grey[850],
+                      tileColor: Colors.grey[800],
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                   );

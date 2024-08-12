@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:uddeshhya/view/mainScreen.dart';
+import 'package:uddeshhya/view/main_screen.dart';
 import 'package:uddeshhya/services/auth_service.dart';
 import 'view/screens/login_screen.dart';
 import 'view/screens/sign_up_screen.dart';
@@ -10,7 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   try {
-    print('Initializing Firebase...');
+    //print('Initializing Firebase...');
     await Firebase.initializeApp(
        options: const FirebaseOptions(
     apiKey: 'AIzaSyCddQrr5NMlp9oT9BJb16CFOI8T8p40AAY',
@@ -20,9 +20,9 @@ void main() async {
     storageBucket: 'gs://uddeshhya-fe2ef.appspot.com',
   )
     );
-    print('Firebase initialized successfully.');
+    //print('Firebase initialized successfully.');
   } catch (e) {
-    print('Failed to initialize Firebase: $e');
+   //print('Failed to initialize Firebase: $e');
   }
   
   runApp(MyApp());
@@ -43,10 +43,10 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasData) {
-            print('User is logged in: ${snapshot.data!.email}');
+            //print('User is logged in: ${snapshot.data!.email}');
             return const MainPage(); // User is already logged in
           } else {
-            print('No user logged in');
+            //print('No user logged in');
             return LoginScreen(authService: _auth); // User is not logged in
           }
         },

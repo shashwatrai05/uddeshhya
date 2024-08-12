@@ -8,7 +8,10 @@ import '../../../services/auth_service.dart';
 import 'student_list.dart'; // Import the StudentListScreen
 
 class ClassManagementScreen extends StatefulWidget {
+  const ClassManagementScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ClassManagementScreenState createState() => _ClassManagementScreenState();
 }
 
@@ -40,90 +43,105 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
   }
 
   Future<String?> _showAddClassDialog() {
-  final TextEditingController _nameController = TextEditingController();
-  return showDialog<String>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        backgroundColor: Colors.grey[900], // Dark background color
-        elevation: 8, // Enhanced shadow effect
-        title:
-            const Text(
-              'Add New Class',
-              style: const TextStyle(
-                color:Colors.tealAccent, // Primary color
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+    final TextEditingController nameController = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          backgroundColor: Colors.grey[900], // Dark background color
+          elevation: 8, // Enhanced shadow effect
+          title: const Text(
+            'Add New Class',
+            style: TextStyle(
+              color: uddeshhyacolor, // Primary color
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
-        content: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: TextField(
-            controller: _nameController,
-            style: const TextStyle(color: textcolor), // Light text color
-            decoration: InputDecoration(
-              hintText: 'Enter class name',
-              hintStyle: TextStyle(color: Colors.grey[500]), // Subtle hint color
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.teal),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.teal, width: 2.0),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.teal.withOpacity(0.5)),
-                borderRadius: BorderRadius.circular(8),
+          ),
+          content: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: TextField(
+              controller: nameController,
+              style: const TextStyle(color: textcolor), // Light text color
+              decoration: InputDecoration(
+                hintText: 'Enter class name',
+                hintStyle:
+                    TextStyle(color: Colors.grey[500]), // Subtle hint color
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: uddeshhyacolor),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: uddeshhyacolor, width: 2.0),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-              primary: Colors.tealAccent, // Button text color
-            ),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.teal, // Button background color
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6), // Rounded button
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor:
+                    uddeshhyacolor.withOpacity(0.8), // Button text color
               ),
-              elevation: 5, // Button shadow
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Button padding
+              child: const Text(
+                'Cancel',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            child: const Text(
-              'Add',
-              style: TextStyle(color: textcolor, fontWeight: FontWeight.bold),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: uddeshhyacolor, // Button background color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6), // Rounded button
+                ),
+                elevation: 5, // Button shadow
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20, vertical: 12), // Button padding
+              ),
+              child: const Text(
+                'Add',
+                style: TextStyle(color: textcolor, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(nameController.text);
+              },
             ),
-            onPressed: () {
-              Navigator.of(context).pop(_nameController.text);
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
+          ],
+        );
+      },
+    );
+  }
 
   void _showStudents(String classId) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => StudentListScreen(classId: classId),
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            StudentListScreen(classId: classId), // Replace with your page
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.easeInOut;
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
       ),
     );
   }
@@ -173,10 +191,9 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: const Text('Go Back'),
                       style: ElevatedButton.styleFrom(
-                        primary: uddeshhyacolor, // Background color
-                        onPrimary: textcolor, // Text color
+                        foregroundColor: textcolor,
+                        backgroundColor: uddeshhyacolor, // Text color
                         elevation: 5, // Shadow depth
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -184,7 +201,8 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                         ),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12), // Padding
-                      )),
+                      ),
+                      child: const Text('Go Back')),
                 ],
               ),
             );
@@ -195,7 +213,8 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.no_meeting_room_rounded, color: Colors.grey, size: 40),
+                  const Icon(Icons.no_meeting_room_rounded,
+                      color: Colors.grey, size: 40),
                   const SizedBox(height: 16),
                   const Text(
                     'No Classes Available',
@@ -212,13 +231,12 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Go Back'),
-                    style: ElevatedButton.styleFrom(
-                        primary: uddeshhyacolor, // Background color
-                        onPrimary: textcolor, // Text color
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: textcolor,
+                        backgroundColor: uddeshhyacolor, // Text color
                         elevation: 5, // Shadow depth
                         shape: RoundedRectangleBorder(
                           borderRadius:
@@ -226,12 +244,12 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                         ),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12), // Padding
-                      )
-                  ),
+                      ),
+                      child: const Text('Go Back')),
                 ],
               ),
             );
-}
+          }
 
           final classes = snapshot.data!;
           return ListView.builder(
@@ -257,26 +275,39 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                         color: textcolor),
                   ),
                   subtitle: Padding(
-                    padding: const EdgeInsets.only(top:3.0),
+                    padding: const EdgeInsets.only(top: 3.0),
                     child: FutureBuilder<List<StudentModel>>(
                       future: _classService.getStudents(classModel.id),
                       builder: (context, studentSnapshot) {
-                        if (studentSnapshot.connectionState == ConnectionState.waiting) {
-                          return const Text('Loading Students....', style: TextStyle(color: Colors.white60, fontSize: 14),);
+                        if (studentSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text(
+                            'Loading Students....',
+                            style:
+                                TextStyle(color: Colors.white60, fontSize: 14),
+                          );
                         }
                         if (studentSnapshot.hasError) {
-                          return const Text('Unable to load students', style: TextStyle(color: Colors.white60, fontSize: 14));
+                          return const Text('Unable to load students',
+                              style: TextStyle(
+                                  color: Colors.white60, fontSize: 14));
                         }
-                        if (!studentSnapshot.hasData || studentSnapshot.data!.isEmpty) {
-                          return const Text('No students',style: TextStyle(color: Colors.white60, fontSize: 14));
+                        if (!studentSnapshot.hasData ||
+                            studentSnapshot.data!.isEmpty) {
+                          return const Text('No students',
+                              style: TextStyle(
+                                  color: Colors.white60, fontSize: 14));
                         }
-                    
+
                         final students = studentSnapshot.data!;
-                        final studentCount = students.length; // Get the length of the student list
-                    
-                        return
-                            Text('Total Students: $studentCount', style: const TextStyle(color: Colors.white60, fontSize: 14));// Display the student count
-                            //...students.map((student) => Text(student.name)).toList(),
+                        final studentCount = students
+                            .length; // Get the length of the student list
+
+                        return Text('Total Students: $studentCount',
+                            style: const TextStyle(
+                                color: Colors.white60,
+                                fontSize: 14)); // Display the student count
+                        //...students.map((student) => Text(student.name)).toList(),
                       },
                     ),
                   ),

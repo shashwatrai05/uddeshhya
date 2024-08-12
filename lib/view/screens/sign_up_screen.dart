@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
-import 'package:uddeshhya/view/mainScreen.dart';
+import 'package:uddeshhya/view/main_screen.dart';
 import '../../services/auth_service.dart';
 import 'login_screen.dart'; // Import the login screen
 
@@ -9,9 +9,10 @@ class SignUpScreen extends StatefulWidget {
   final AuthService authService;
 
   // ignore: prefer_const_constructors_in_immutables
-  SignUpScreen({required this.authService});
+  SignUpScreen({super.key, required this.authService});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
@@ -46,8 +47,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     try {
-      final newUser = await widget.authService.signUpWithEmailAndPassword(email, password, role);
+      final newUser = await widget.authService
+          .signUpWithEmailAndPassword(email, password, role);
       if (newUser != null) {
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -76,7 +79,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: bgcolor,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 120.0, left: 20, right: 20, bottom: 30),
+          padding: const EdgeInsets.only(
+              top: 120.0, left: 20, right: 20, bottom: 30),
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Hey there,',
                     style: TextStyle(
                       fontSize: 24,
@@ -103,17 +107,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               const SizedBox(height: 50.0),
-              
               Center(
                 child: Text(
                   'Create Your Account',
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.grey[300],
                         fontWeight: FontWeight.w600,
                       ),
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -126,7 +131,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   prefixIcon: const Icon(Icons.email, color: Colors.white70),
                   hintStyle: const TextStyle(color: Colors.white60),
                   labelStyle: const TextStyle(color: Colors.white70),
@@ -150,7 +156,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   prefixIcon: const Icon(Icons.lock, color: Colors.white70),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -173,7 +180,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 20.0),
-            
               const SizedBox(height: 20.0),
               Center(
                 child: SizedBox(
@@ -181,8 +187,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: ElevatedButton(
                     onPressed: _register,
                     style: ElevatedButton.styleFrom(
-                      primary: uddeshhyacolor,
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                      backgroundColor: uddeshhyacolor,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 40),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -195,7 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height*0.25),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.25),
               Center(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -206,7 +213,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                        Navigator.pushReplacementNamed(
+                            context, LoginScreen.routeName);
                       },
                       child: const Text(
                         'Login',

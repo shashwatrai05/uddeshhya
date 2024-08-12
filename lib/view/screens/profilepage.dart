@@ -5,6 +5,8 @@ import 'package:uddeshhya/view/screens/login_screen.dart';
 import '../../services/auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -24,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -72,9 +75,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 future: _userRole,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text('Loading Your Role......', style: const TextStyle(color: Colors.tealAccent,fontSize: 16),);
-                  } 
-                  else if (snapshot.hasError) {
+                    return const Text(
+                      'Loading Your Role......',
+                      style: TextStyle(color: Colors.tealAccent, fontSize: 16),
+                    );
+                  } else if (snapshot.hasError) {
                     return const Text(
                       'Role is not determined',
                       style: TextStyle(color: Colors.redAccent),
@@ -94,14 +99,19 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () => _logout(context),
-                child: const Text('Logout',style: TextStyle(color: textcolor),),
                 style: ElevatedButton.styleFrom(
-                  primary: uddeshhyacolor,
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  backgroundColor: uddeshhyacolor,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  textStyle: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                child: const Text(
+                  'Logout',
+                  style: TextStyle(color: textcolor),
                 ),
               ),
             ],

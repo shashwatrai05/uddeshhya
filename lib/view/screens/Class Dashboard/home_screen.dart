@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/add_syllabus.dart';
-import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_class_List.dart';
+import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_class_list.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/attendance_screen.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/class_management.dart';
 
@@ -10,6 +10,8 @@ import '../../../services/auth_service.dart';
 import '../../widgets/header.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -17,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final AuthService _authService = AuthService();
 
-   @override
+  @override
   void initState() {
     super.initState();
     _userRole = _authService.getUserRole(_authService.currentUser!.uid);
@@ -33,9 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             // Hero Sectio
-            Header(title: 'DASHBOARD OVERVIEW', subtitle: 'Manage students, track attendance, and plan activities.',),
+            const Header(
+              title: 'DASHBOARD OVERVIEW',
+              subtitle:
+                  'Manage students, track attendance, and plan activities.',
+            ),
             const SizedBox(height: 20),
             // Dashboard Cards
             Expanded(
@@ -49,8 +57,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => ClassManagementScreen(),
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation,
+                                  secondaryAnimation) =>
+                              const ClassManagementScreen(), // Replace with your page
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var begin = const Offset(1.0, 0.0);
+                            var end = Offset.zero;
+                            var curve = Curves.easeInOut;
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
                         ),
                       );
                     },
@@ -64,8 +86,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => AttendanceScreen(),
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation,
+                                  secondaryAnimation) =>
+                              const AttendanceScreen(), // Replace with your page
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var begin = const Offset(1.0, 0.0);
+                            var end = Offset.zero;
+                            var curve = Curves.easeInOut;
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
                         ),
                       );
                     },
@@ -79,40 +115,68 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => AttendanceClassListScreen(),
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation,
+                                  secondaryAnimation) =>
+                              const AttendanceClassListScreen(), // Replace with your page
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var begin = const Offset(1.0, 0.0);
+                            var end = Offset.zero;
+                            var curve = Curves.easeInOut;
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
                         ),
                       );
                     },
                   ),
                   const SizedBox(height: 16),
                   FutureBuilder<String>(
-                    future: _userRole,
-                    builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox.shrink();
-            }
-            if (snapshot.hasError ||
-                !snapshot.hasData ||
-                snapshot.data != 'admin') {
-              return SizedBox.shrink();
-            }
-                  return DashboardCard(
-                      title: 'Add Syllabus',
-                      subtitle: 'Add or modify course syllabus',
-                      icon: FontAwesomeIcons.book,
-                      color: Colors.purpleAccent,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddSyllabusScreen(),
-                          ),
+                      future: _userRole,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const SizedBox.shrink();
+                        }
+                        if (snapshot.hasError ||
+                            !snapshot.hasData ||
+                            snapshot.data != 'admin') {
+                          return const SizedBox.shrink();
+                        }
+                        return DashboardCard(
+                          title: 'Add Syllabus',
+                          subtitle: 'Add or modify course syllabus',
+                          icon: FontAwesomeIcons.book,
+                          color: Colors.purpleAccent,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation,
+                                        secondaryAnimation) =>
+                                    const AddSyllabusScreen(), // Replace with your page
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  var begin = const Offset(1.0, 0.0);
+                                  var end = Offset.zero;
+                                  var curve = Curves.easeInOut;
+                                  var tween = Tween(begin: begin, end: end)
+                                      .chain(CurveTween(curve: curve));
+                                  return SlideTransition(
+                                    position: animation.drive(tween),
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         );
-                      },
-                    );
-                    }
-                  ),
+                      }),
                 ],
               ),
             ),
@@ -130,7 +194,8 @@ class DashboardCard extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
 
-  DashboardCard({
+  const DashboardCard({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.icon,
@@ -141,23 +206,21 @@ class DashboardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        color: Colors.grey[850],
-        elevation: 8,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: ListTile(
-          leading: Icon(icon, color: color, size: 30),
-          title: Text(title,
-              style: const TextStyle(
-                  color: textcolor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600)),
-          subtitle: Text(subtitle,
-              style: const TextStyle(color: Colors.white60, fontSize: 14)),
-          trailing: Icon(Icons.arrow_forward_ios_rounded, color: color),
-          onTap: onTap,
-        ),
+      color: Colors.grey[850],
+      elevation: 8,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: color, size: 30),
+        title: Text(title,
+            style: const TextStyle(
+                color: textcolor, fontSize: 18, fontWeight: FontWeight.w600)),
+        subtitle: Text(subtitle,
+            style: const TextStyle(color: Colors.white60, fontSize: 14)),
+        trailing: Icon(Icons.arrow_forward_ios_rounded, color: color),
+        onTap: onTap,
+      ),
     );
   }
 }

@@ -45,17 +45,17 @@ class ExpenseService {
     
     // Check if any documents are returned
     if (snapshot.docs.isEmpty) {
-      print('No documents found in the expenses collection.');
+      //print('No documents found in the expenses collection.');
       return []; // Return an empty list if no documents are found
     } else {
       // Map document IDs to a list of strings (assuming document IDs are emails)
       final emailList = snapshot.docs.map((doc) => doc.id).toList();
-      print('Fetched emails are: $emailList');
+      //print('Fetched emails are: $emailList');
       return emailList; // Return the list of email IDs
     }
   } catch (e) {
-    print('Print Statement:: Error fetching user emails: $e');
-    throw e; // Re-throw the exception to signal an error
+    //print('Print Statement:: Error fetching user emails: $e');
+    rethrow; // Re-throw the exception to signal an error
   }
 }
 
@@ -78,8 +78,8 @@ class ExpenseService {
       );
     }).toList();
   } catch (e) {
-    print('Print Statement:: Error fetching expenses in services: $e');
-    throw e;
+    //print('Print Statement:: Error fetching expenses in services: $e');
+    rethrow;
   }
 }
 

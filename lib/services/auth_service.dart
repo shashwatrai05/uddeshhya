@@ -12,9 +12,9 @@ class AuthService {
   Future<User?> getCurrentUser() async {
   User? user = _auth.currentUser;
   if (user != null) {
-    print('Current user: ${user.email}');
+    //print('Current user: ${user.email}');
   } else {
-    print('No current user found.');
+    //print('No current user found.');
   }
   return user;
 }
@@ -25,8 +25,8 @@ class AuthService {
       final userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } catch (e) {
-      print('SignIn Error: $e');
-      throw(e);
+      //print('SignIn Error: $e');
+      rethrow;
      // return null;
     }
   }
@@ -40,7 +40,7 @@ class AuthService {
     try {
       final isAllowed = await _isEmailAllowed(email);
       if (!isAllowed) {
-        print('Email is not allowed');
+        //print('Email is not allowed');
         throw Exception('Email is not allowed');
       }
 
@@ -51,8 +51,8 @@ class AuthService {
       });
       return userCredential.user;
     } catch (e) {
-      print('SignUp Error: $e');
-      throw(e);
+      //print('SignUp Error: $e');
+      rethrow;
       //return null;
     }
   }

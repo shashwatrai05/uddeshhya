@@ -8,11 +8,12 @@ class SyllabusService {
     try {
       final querySnapshot = await _firestore.collection('syllabus').get();
       return querySnapshot.docs.map((doc) {
+        // ignore: unnecessary_cast
         final data = doc.data() as Map<String, dynamic>;
         return SyllabusModel.fromMap(data);
       }).toList();
     } catch (e) {
-      print('Error getting syllabi: $e');
+      //print('Error getting syllabi: $e');
       return [];
     }
   }
@@ -27,7 +28,7 @@ class SyllabusService {
         return null;
       }
     } catch (e) {
-      print('Error getting syllabus: $e');
+     // print('Error getting syllabus: $e');
       return null;
     }
   }
@@ -36,7 +37,7 @@ class SyllabusService {
     try {
       await _firestore.collection('syllabus').doc(syllabus.standard).set(syllabus.toMap());
     } catch (e) {
-      print('Error adding syllabus: $e');
+    //  print('Error adding syllabus: $e');
     }
   }
 
@@ -44,7 +45,7 @@ class SyllabusService {
     try {
       await _firestore.collection('syllabus').doc(syllabus.standard).update(syllabus.toMap());
     } catch (e) {
-      print('Error updating syllabus: $e');
+    //  print('Error updating syllabus: $e');
     }
   }
 }

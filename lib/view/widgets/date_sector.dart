@@ -5,7 +5,7 @@ class DateSelector extends StatelessWidget {
   final DateTime selectedDate;
   final void Function(DateTime) onDateSelected;
 
-  DateSelector({
+  const DateSelector({super.key, 
     required this.dates,
     required this.selectedDate,
     required this.onDateSelected,
@@ -13,7 +13,7 @@ class DateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 80.0, // Adjust height as needed
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

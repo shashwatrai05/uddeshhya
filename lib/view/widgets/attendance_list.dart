@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AttendanceList extends StatelessWidget {
   final Map<String, bool> studentAttendance;
 
-  AttendanceList({required this.studentAttendance});
+  const AttendanceList({super.key, required this.studentAttendance});
 
   @override
   Widget build(BuildContext context) {

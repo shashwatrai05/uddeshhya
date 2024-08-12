@@ -7,19 +7,23 @@ import '../../constants/theme.dart';
 class AttendanceHistoryScreen extends StatefulWidget {
   final String className;
 
-  const AttendanceHistoryScreen({required this.className, Key? key}) : super(key: key);
+  const AttendanceHistoryScreen({required this.className, Key? key})
+      : super(key: key);
 
   @override
-  _AttendanceHistoryScreenState createState() => _AttendanceHistoryScreenState();
+  // ignore: library_private_types_in_public_api
+  _AttendanceHistoryScreenState createState() =>
+      _AttendanceHistoryScreenState();
 }
- 
+
 class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
   final AttendanceService _attendanceService = AttendanceService();
 
   List<AttendanceModel>? _attendanceRecords;
   Map<String, double>? _attendancePercentages;
   AttendanceModel? _selectedRecord;
-  
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -27,14 +31,24 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
   }
 
   Future<void> _loadAttendanceHistory(String className) async {
-    final records = await _attendanceService.getAttendanceHistory(className);
-    setState(() {
-      _attendanceRecords = records.isEmpty ? [] : records;
-      _attendancePercentages = AttendanceModel.calculateAttendancePercentages(records);
-      if (_attendanceRecords!.isNotEmpty) {
-        _selectedRecord = _attendanceRecords![0]; // Default to the first record
-      }
-    });
+    try {
+      final records = await _attendanceService.getAttendanceHistory(className);
+      setState(() {
+        _attendanceRecords = records.isEmpty ? [] : records;
+        _attendancePercentages =
+            AttendanceModel.calculateAttendancePercentages(records);
+        if (_attendanceRecords!.isNotEmpty) {
+          _selectedRecord =
+              _attendanceRecords![0]; // Default to the first record
+        }
+        _isLoading = false;
+      });
+    } catch (e) {
+      // Handle error (e.g., show a Snackbar or an error message)
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _onDateSelected(AttendanceModel record) {
@@ -62,146 +76,218 @@ class _AttendanceHistoryScreenState extends State<AttendanceHistoryScreen> {
         ),
       ),
       backgroundColor: bgcolor,
-      body: _attendanceRecords == null
-          ? const Center(child: CircularProgressIndicator())
-          : _attendanceRecords!.isEmpty
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(color: uddeshhyacolor),
+            )
+          : _attendanceRecords == null
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.no_accounts_rounded, color: Colors.grey, size: 40),
+                      const Icon(Icons.error, color: uddeshhyacolor, size: 50),
                       const SizedBox(height: 16),
                       const Text(
-                        'No Attendance Record Found',
+                        'Oops! Something went wrong.',
                         style: TextStyle(
                             color: textcolor,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Text(
-                          'There is no attendance record for this class at this moment.',
-                          style: TextStyle(color: Colors.grey.shade300, fontSize: 14),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
                       const SizedBox(height: 24),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Go Back'),
+                        onPressed: () => Navigator.of(context).pop(),
                         style: ElevatedButton.styleFrom(
-                          primary: uddeshhyacolor, // Background color
-                          onPrimary: textcolor, // Text color
-                          elevation: 5, // Shadow depth
+                          foregroundColor: textcolor,
+                          backgroundColor: uddeshhyacolor, // Text color
+                          elevation: 5,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
                         ),
+                        child: const Text('Go Back'),
                       ),
                     ],
                   ),
                 )
-              : Column(
-                  children: [
-                    // Horizontally scrollable list of dates
-                    Container(
-                      height: 80, // Adjust height as needed
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: _attendanceRecords!.map((record) {
-                          return GestureDetector(
-                            onTap: () => _onDateSelected(record),
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                              decoration: BoxDecoration(
-                                color: _selectedRecord == record ? Colors.blue : Colors.grey[800],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '${record.date.toLocal()}'.split(' ')[0],
-                                  style: TextStyle(
-                                    color: _selectedRecord == record ? Colors.white : Colors.white70,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
+              : _attendanceRecords!.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.no_accounts_rounded,
+                              color: Colors.grey, size: 40),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'No Attendance Record Found',
+                            style: TextStyle(
+                                color: textcolor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              'There is no attendance record for this class at this moment.',
+                              style: TextStyle(
+                                  color: Colors.grey.shade300, fontSize: 14),
+                              textAlign: TextAlign.center,
                             ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    // Display attendance for the selected date
-                    Expanded(
-                      child: _selectedRecord == null
-                          ? Center(
-                              child: Text(
-                                'No Record Selected',
-                                style: TextStyle(color: Colors.grey.shade300, fontSize: 16),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: textcolor,
+                              backgroundColor: uddeshhyacolor, // Text color
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: ListView(
-                                children: _selectedRecord!.studentAttendance.entries.map((entry) {
-                                  return ListTile(
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                    title: Text(
-                                      entry.key,
-                                      style: const TextStyle(color: Colors.white70),
-                                    ),
-                                    trailing: Text(
-                                      entry.value ? 'Present' : 'Absent',
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 12),
+                            ),
+                            child: const Text('Go Back'),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        // Horizontally scrollable list of dates
+                        Container(
+                          height: MediaQuery.of(context).size.height *
+                              0.075, // Slightly larger height
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: ListView(
+                            reverse: true,
+                            scrollDirection: Axis.horizontal,
+                            children: _attendanceRecords!.map((record) {
+                              return GestureDetector(
+                                onTap: () => _onDateSelected(record),
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 16),
+                                  decoration: BoxDecoration(
+                                    color: _selectedRecord == record
+                                        ? Colors.blue
+                                        : Colors.grey[800],
+                                    borderRadius: BorderRadius.circular(2),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black54,
+                                        blurRadius: 8.0,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '${record.date.toLocal()}'.split(' ')[0],
                                       style: TextStyle(
-                                        color: entry.value ? Colors.green : Colors.red,
+                                        color: _selectedRecord == record
+                                            ? Colors.white
+                                            : Colors.white70,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    tileColor: Colors.grey[850],
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_attendancePercentages != null) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => AttendancePercentagesScreen(attendancePercentages: _attendancePercentages!),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Attendance percentages are not available.'),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('View Attendance Percentages'),
-                      style: ElevatedButton.styleFrom(
-                        primary: uddeshhyacolor, // Background color
-                        onPrimary: textcolor, // Text color
-                        elevation: 5, // Shadow depth
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding
-                      ),
+                        // Display attendance for the selected date
+                        Expanded(
+                          child: _selectedRecord == null
+                              ? Center(
+                                  child: Text(
+                                    'No Record Selected',
+                                    style: TextStyle(
+                                        color: Colors.grey.shade300,
+                                        fontSize: 16),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: ListView(
+                                    children: _selectedRecord!
+                                        .studentAttendance.entries
+                                        .map((entry) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 4.0),
+                                        child: ListTile(
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 16.0),
+                                          title: Text(
+                                            entry.key,
+                                            style: const TextStyle(
+                                                color: Colors.white70),
+                                          ),
+                                          trailing: Text(
+                                            entry.value ? 'Present' : 'Absent',
+                                            style: TextStyle(
+                                              color: entry.value
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                            ),
+                                          ),
+                                          tileColor: Colors.grey[850],
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(2.0),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_attendancePercentages != null) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      AttendancePercentagesScreen(
+                                          attendancePercentages:
+                                              _attendancePercentages!),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Attendance percentages are not available.'),
+                                ),
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: textcolor,
+                            backgroundColor: uddeshhyacolor, // Text color
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2.0),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                          ),
+                          child: const Text('View Attendance Percentages'),
+                        ),
+                        const SizedBox(
+                            height: 16), // Adjusted space after button
+                      ],
                     ),
-                  ],
-                ),
     );
   }
 }

@@ -7,7 +7,10 @@ import '../../../services/student_service.dart';
 import '../../constants/theme.dart';
 
 class AttendanceScreen extends StatefulWidget {
+  const AttendanceScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _AttendanceScreenState createState() => _AttendanceScreenState();
 }
 
@@ -36,6 +39,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     final classes = await _classService.getClasses();
     setState(() {
       _classes = classes;
+      // ignore: prefer_for_elements_to_map_fromiterable
       _idToNameMap = Map.fromIterable(
         classes,
         key: (classModel) => classModel.id,
@@ -65,6 +69,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         _selectedDate,
         attendanceData,
       );
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     }
   }
@@ -97,7 +102,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             Container(
               decoration: BoxDecoration(
                 color: Colors.grey[850], // Darker background
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(2),
                 border: Border.all(color: Colors.grey.shade500),
               ),
               child: DropdownButtonHideUnderline(
@@ -114,8 +119,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   icon: const Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
-                      padding:
-                          EdgeInsets.only(right: 8.0), // Reduced spacing
+                      padding: EdgeInsets.only(right: 8.0), // Reduced spacing
                       child: Icon(
                         Icons.arrow_drop_down_rounded,
                         size: 30,
@@ -153,7 +157,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             Container(
               decoration: BoxDecoration(
                 color: Colors.grey[850], // Darker background
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(2),
                 border: Border.all(color: Colors.grey.shade500),
               ),
               child: TextField(
@@ -176,26 +180,29 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2101),
                     builder: (context, child) {
-          return Theme(
-            data: ThemeData.dark().copyWith(
-              primaryColor: Colors.blueAccent, // Color of the selected date
-              //accentColor: Colors.teal,  // Color of the date picker header
-              buttonTheme: const ButtonThemeData(
-                textTheme: ButtonTextTheme.primary, // Color of the buttons
-              ),
-              dialogBackgroundColor:
-                  Colors.black, // Background color of the date picker
-              dividerColor: Colors.teal.shade700, // Color of the divider
-              textButtonTheme: TextButtonThemeData(
-                style: TextButton.styleFrom(
-                  primary: Colors.teal, // Color of the text buttons
-                ),
-              ),
-              // Optional: Adjust colors for other elements if needed
-            ),
-            child: child!,
-          );
-        },
+                      return Theme(
+                        data: ThemeData.dark().copyWith(
+                          primaryColor:
+                              Colors.blueAccent, // Color of the selected date
+                          //accentColor: Colors.teal,  // Color of the date picker header
+                          buttonTheme: const ButtonThemeData(
+                            textTheme:
+                                ButtonTextTheme.primary, // Color of the buttons
+                          ),
+                          dialogBackgroundColor: Colors
+                              .black, // Background color of the date picker
+                          dividerColor: uddeshhyacolor, // Color of the divider
+                          textButtonTheme: TextButtonThemeData(
+                            style: TextButton.styleFrom(
+                              foregroundColor:
+                                  uddeshhyacolor, // Color of the text buttons
+                            ),
+                          ),
+                          // Optional: Adjust colors for other elements if needed
+                        ),
+                        child: child!,
+                      );
+                    },
                   );
                   if (date != null && date != _selectedDate) {
                     setState(() {
@@ -213,7 +220,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 8.0),
 
-                  //color: Colors.grey[800],
+                    //color: Colors.grey[800],
                     child: CheckboxListTile(
                       title: Text(
                         student.name,
@@ -226,7 +233,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         });
                       },
                       activeColor: uddeshhyacolor,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16.0),
                     ),
                   );
                 }).toList(),
@@ -240,11 +248,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 child: ElevatedButton(
                   onPressed: _submitAttendance,
                   style: ElevatedButton.styleFrom(
-                    primary: uddeshhyacolor,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+                    backgroundColor: uddeshhyacolor,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 32.0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
                   child: const Text(

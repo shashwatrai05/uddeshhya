@@ -9,11 +9,12 @@ class StudentService {
     try {
       final querySnapshot = await _firestore.collection('classes').doc(classId).collection('students').get();
       return querySnapshot.docs.map((doc) {
+        // ignore: unnecessary_cast
         final data = doc.data() as Map<String, dynamic>;
         return StudentModel.fromMap(data);
       }).toList();
     } catch (e) {
-      print('Error getting students: $e');
+      //print('Error getting students: $e');
       return [];
     }
   }
@@ -22,7 +23,7 @@ class StudentService {
     try {
       await _firestore.collection('classes').doc(classId).collection('students').doc(student.id).set(student.toMap());
     } catch (e) {
-      print('Error adding student: $e');
+      //print('Error adding student: $e');
     }
   }
 
@@ -30,7 +31,7 @@ class StudentService {
     try {
       await _firestore.collection('classes').doc(classId).collection('students').doc(studentId).delete();
     } catch (e) {
-      print('Error deleting student: $e');
+      //print('Error deleting student: $e');
     }
   }
 
@@ -39,7 +40,7 @@ class StudentService {
       final syllabusDoc = await _firestore.collection('syllabus').doc(standard).get();
 
       if (!syllabusDoc.exists) {
-        print('No syllabus found for standard: $standard');
+       // print('No syllabus found for standard: $standard');
         return {}; // Return an empty map if no document exists
       }
 
@@ -55,7 +56,7 @@ class StudentService {
         return {}; // Return an empty map if 'topics' is not a list
       }
     } catch (e) {
-      print('Error fetching syllabus completion: $e');
+     // print('Error fetching syllabus completion: $e');
       return {}; // Return an empty map in case of error
     }
   }

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';// Import your AuthService
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
@@ -30,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: const Center(child: CircularProgressIndicator()),
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }

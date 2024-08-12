@@ -4,7 +4,7 @@ class ClassSelector extends StatelessWidget {
   final List<String> classes;
   final void Function(String?)? onClassSelected; // Updated to handle nullable String
 
-  ClassSelector({required this.classes, this.onClassSelected});
+  const ClassSelector({super.key, required this.classes, this.onClassSelected});
 
   @override
   Widget build(BuildContext context) {

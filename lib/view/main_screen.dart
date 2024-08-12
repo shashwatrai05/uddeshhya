@@ -24,14 +24,14 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     _selectedIndex = widget.selectedIndex;
     tabWidgets = <Widget>[
-      HomeScreen(),
+      const HomeScreen(),
       //ClassManagementScreen(),
-      ActivityPlannerScreen(), // Replace with your actual placeholder widget or screen
+      const ActivityPlannerScreen(), // Replace with your actual placeholder widget or screen
       //AttendanceHistoryScreen(),
       
       //ActivityPlannerScreen()
-      ExpensesPage(),
-      ProfilePage(),
+      const ExpensesPage(),
+      const ProfilePage(),
       // Add more screens here
     ];
   }

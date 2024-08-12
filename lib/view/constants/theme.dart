@@ -15,8 +15,7 @@ TextStyle? subHeading(BuildContext context) =>
     Theme.of(context).textTheme.displayMedium;
 TextStyle? body2(BuildContext context) =>
     Theme.of(context).textTheme.bodyMedium;
-TextStyle? body1(BuildContext context) => 
-    Theme.of(context).textTheme.bodyLarge;
+TextStyle? body1(BuildContext context) => Theme.of(context).textTheme.bodyLarge;
 
 //padding
 const smallPadding = Padding(padding: EdgeInsets.only(top: 20));

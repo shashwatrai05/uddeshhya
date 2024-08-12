@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
-import 'package:uddeshhya/view/mainScreen.dart';
+import 'package:uddeshhya/view/main_screen.dart';
 import '../../services/auth_service.dart';
 import 'sign_up_screen.dart';
 
@@ -8,9 +8,10 @@ class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
   final AuthService authService;
 
-  LoginScreen({required this.authService});
+  const LoginScreen({super.key, required this.authService});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -44,8 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      final user = await widget.authService.signInWithEmailAndPassword(email, password);
+      final user =
+          await widget.authService.signInWithEmailAndPassword(email, password);
       if (user != null) {
+        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -74,7 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: bgcolor,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 120.0, left: 20, right: 20, bottom: 30),
+          padding: const EdgeInsets.only(
+              top: 120.0, left: 20, right: 20, bottom: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -83,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text(
                     'Hey there,',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: textcolor,
@@ -103,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Center(
                 child: Text(
                   'Login to your account',
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.grey[300],
                         fontWeight: FontWeight.w600,
                       ),
@@ -122,7 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   prefixIcon: const Icon(Icons.email, color: Colors.white70),
                   hintStyle: const TextStyle(color: Colors.white60),
                   labelStyle: const TextStyle(color: Colors.white70),
@@ -146,11 +151,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   prefixIcon: const Icon(Icons.lock, color: Colors.white70),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: Colors.white70,
                     ),
                     onPressed: () {
@@ -175,8 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: _login,
                     style: ElevatedButton.styleFrom(
-                      primary: uddeshhyacolor,
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                      backgroundColor: uddeshhyacolor,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 40),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -189,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height*0.25),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.25),
               Center(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -200,7 +209,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, SignUpScreen.routeName);
+                        Navigator.pushReplacementNamed(
+                            context, SignUpScreen.routeName);
                       },
                       child: const Text(
                         'Sign up',

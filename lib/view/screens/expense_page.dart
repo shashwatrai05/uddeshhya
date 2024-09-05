@@ -404,7 +404,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                   }
                   if (snapshot.hasError ||
                       !snapshot.hasData ||
-                      snapshot.data != 'admin') {
+                      snapshot.data != 'finance_team') {
                     return const SizedBox.shrink();
                   }
                   return ElevatedButton(

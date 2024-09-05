@@ -307,116 +307,119 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                       );
                     }
                     final activities = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: activities.length,
-                      itemBuilder: (context, index) {
-                        final activity = activities[index];
-                        return Column(
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(Icons.calendar_month_rounded,
-                                    color: Colors.white70),
-                                const SizedBox(width: 8.0),
-                                Text(
-                                  DateFormat.yMd().format(activity.date),
-                                  style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            //SizedBox(height: 8.0),
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(bottom: 20.0, top: 8.0),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[850],
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black54,
-                                    blurRadius: 6.0,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 2.0, horizontal: 16.0),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      activity.title,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Text(
-                                    activity.remark,
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom:60),
+                      child: ListView.builder(
+                        itemCount: activities.length,
+                        itemBuilder: (context, index) {
+                          final activity = activities[index];
+                          return Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.calendar_month_rounded,
+                                      color: Colors.white70),
+                                  const SizedBox(width: 8.0),
+                                  Text(
+                                    DateFormat.yMd().format(activity.date),
                                     style: const TextStyle(
-                                      color: Colors.white54,
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.bold,
                                       fontSize: 14.0,
                                     ),
                                   ),
+                                ],
+                              ),
+                              //SizedBox(height: 8.0),
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(bottom: 20.0, top: 8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[850],
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black54,
+                                      blurRadius: 6.0,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
-                                trailing: FutureBuilder<String>(
-                                  future: _userRole,
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
+                                child: ListTile(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 2.0, horizontal: 16.0),
+                                  title: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        activity.title,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: Text(
+                                      activity.remark,
+                                      style: const TextStyle(
+                                        color: Colors.white54,
+                                        fontSize: 14.0,
+                                      ),
+                                    ),
+                                  ),
+                                  trailing: FutureBuilder<String>(
+                                    future: _userRole,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const SizedBox.shrink();
+                                      }
+                                      if (snapshot.hasData &&
+                                          snapshot.data == 'admin') {
+                                        return Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons.edit,
+                                                  color: Colors.white),
+                                              onPressed: () =>
+                                                  _showActivityDialog(
+                                                      activity: activity),
+                                            ),
+                                            const SizedBox(width: 8.0),
+                                            IconButton(
+                                              icon: const Icon(Icons.delete,
+                                                  color: Colors.white),
+                                              onPressed: () async {
+                                                await _activityService
+                                                    .deleteActivity(activity.id);
+                                                setState(() {
+                                                  _activitiesFuture =
+                                                      _activityService
+                                                          .getActivities();
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      }
                                       return const SizedBox.shrink();
-                                    }
-                                    if (snapshot.hasData &&
-                                        snapshot.data == 'admin') {
-                                      return Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                            icon: const Icon(Icons.edit,
-                                                color: Colors.white),
-                                            onPressed: () =>
-                                                _showActivityDialog(
-                                                    activity: activity),
-                                          ),
-                                          const SizedBox(width: 8.0),
-                                          IconButton(
-                                            icon: const Icon(Icons.delete,
-                                                color: Colors.white),
-                                            onPressed: () async {
-                                              await _activityService
-                                                  .deleteActivity(activity.id);
-                                              setState(() {
-                                                _activitiesFuture =
-                                                    _activityService
-                                                        .getActivities();
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    }
-                                    return const SizedBox.shrink();
-                                  },
-                                ),
-                                tileColor: Colors.black.withOpacity(0.3),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                                    },
+                                  ),
+                                  tileColor: Colors.black.withOpacity(0.3),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
+                            ],
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
@@ -425,7 +428,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
           ),
         ),
         floatingActionButton: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(top:10.0, right: 10.0),
           child: FutureBuilder<String>(
             future: _userRole,
             builder: (context, snapshot) {

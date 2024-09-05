@@ -105,17 +105,18 @@ class _AdminExpensePageState extends State<AdminExpensePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
-          content: const Text('Are you sure you want to continue?'),
+          backgroundColor: kUpperContainerColor,
+          title: Text(title, style: const TextStyle(color: textcolor),),
+          content: const Text('Are you sure you want to continue?', style: TextStyle(color: textcolor),),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: const Text('Cancel', style: TextStyle(color: textcolor),),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Confirm'),
+              child: const Text('Confirm', style: TextStyle(color: uddeshhyacolor),),
               onPressed: () {
                 Navigator.of(context).pop();
                 onConfirm();

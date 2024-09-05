@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:uddeshhya/view/main_screen.dart';
 import 'package:uddeshhya/services/auth_service.dart';
+import 'view/screens/forget_password.dart';
 import 'view/screens/login_screen.dart';
 import 'view/screens/sign_up_screen.dart';
 
@@ -33,6 +34,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   final AuthService _auth = AuthService();
 
+  MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,7 +56,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         SignUpScreen.routeName: (context) => SignUpScreen(authService: _auth),
-        LoginScreen.routeName:(context)=> LoginScreen(authService: _auth)
+        LoginScreen.routeName:(context)=> LoginScreen(authService: _auth),
+        ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(authService: AuthService()),
       },
     );
   }

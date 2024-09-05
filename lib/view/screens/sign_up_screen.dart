@@ -97,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   Text(
-                    'Welcome to Uddeshyay',
+                    'Welcome to Uddeshhya',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,

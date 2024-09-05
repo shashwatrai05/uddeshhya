@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
+import 'package:uddeshhya/view/screens/allowed_emails.dart';
 import 'package:uddeshhya/view/screens/login_screen.dart';
 import '../../services/auth_service.dart';
 
@@ -65,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Text(
                 email,
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontSize: 18,
                   fontWeight: FontWeight.w600,
                   color: Colors.white70,
                 ),
@@ -88,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     return Text(
                       'Role: ${snapshot.data ?? 'Unknown'}',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Colors.tealAccent,
                       ),
@@ -96,6 +97,65 @@ class _ProfilePageState extends State<ProfilePage> {
                   }
                 },
               ),
+              Padding(
+              padding: const EdgeInsets.only(
+                  top: 8.0, bottom: 8.0, left: 16, right: 16),
+              child: FutureBuilder<String>(
+                future: _userRole,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox.shrink();
+                  }
+                  if (snapshot.hasError ||
+                      !snapshot.hasData ||
+                      snapshot.data != 'admin') {
+                    return const SizedBox.shrink();
+                  }
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width*0.5,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      const AllowedEmailsScreen(), // Replace with your page
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    var begin = const Offset(1.0, 0.0);
+                                    var end = Offset.zero;
+                                    var curve = Curves.easeInOut;
+                                    var tween = Tween(begin: begin, end: end)
+                                        .chain(CurveTween(curve: curve));
+                                    return SlideTransition(
+                                      position: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            uddeshhyacolor, // Updated background color
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      child: const Text(
+                        'See All Users',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: textcolor),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () => _logout(context),
@@ -104,7 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   textStyle: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),

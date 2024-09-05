@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
 import 'package:uddeshhya/view/main_screen.dart';
+import 'package:uddeshhya/view/screens/forget_password.dart';
 import '../../services/auth_service.dart';
 import 'sign_up_screen.dart';
 
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   Text(
-                    'Welcome to Uddeshyay',
+                    'Welcome to Uddeshhya',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -176,6 +177,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 style: const TextStyle(color: Colors.white),
               ),
+              Align(
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, ForgotPasswordScreen.routeName);
+                  },
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                  ),
+                ),
+              ),
               const SizedBox(height: 40.0),
               Center(
                 child: SizedBox(
@@ -198,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.25),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.18),
               Center(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

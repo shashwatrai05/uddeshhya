@@ -108,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   }
                   if (snapshot.hasError ||
                       !snapshot.hasData ||
-                      snapshot.data != 'admin') {
+                      (snapshot.data != 'admin' && snapshot.data != 'super_admin')) {
                     return const SizedBox.shrink();
                   }
                   return SizedBox(

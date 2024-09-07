@@ -80,18 +80,19 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   void _submitAttendance() async {
-    if (_selectedClassId != null) {
-      final attendanceData = Map<String, bool>.from(_attendance);
+  if (_selectedClassId != null) {
+    final attendanceData = Map<String, bool>.from(_attendance);
 
-      await _attendanceService.submitAttendance(
-        _selectedClassName!,
-        _selectedDate,
-        attendanceData,
-      );
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
-    }
+    await _attendanceService.submitAttendance(
+      context, // Pass the context here
+      _selectedClassName!,
+      _selectedDate,
+      attendanceData,
+    );
   }
+}
+
+
 
   @override
   Widget build(BuildContext context) {

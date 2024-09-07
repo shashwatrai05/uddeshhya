@@ -5,6 +5,7 @@ import 'package:uddeshhya/view/widgets/LiquidProgressIndicator.dart';
 import '../../../models/student.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/student_service.dart';
+import '../../../services/syllabus_service.dart';
 import 'syllabus_page.dart';
 
 class StudentListScreen extends StatefulWidget {
@@ -25,13 +26,17 @@ class _StudentListScreenState extends State<StudentListScreen> {
   late Future<String> _userRole;
   String _selectedStandard = 'All'; // Default to 'All' to show all students
   String _searchQuery = '';
+  final SyllabusService _syllabusService = SyllabusService();
+  late Future<List<String>> _standardsFuture;
 
-  @override
-  void initState() {
-    super.initState();
-    _studentsFuture = _studentService.getStudents(widget.classId);
-    _userRole = _authService.getUserRole(_authService.currentUser!.uid);
-  }
+ @override
+void initState() {
+  super.initState();
+  _studentsFuture = _studentService.getStudents(widget.classId);
+  _userRole = _authService.getUserRole(_authService.currentUser!.uid);
+  _standardsFuture = _syllabusService.getStandards(); // Fetch standards from Firestore
+}
+
 
   void _addStudent() async {
     final studentData = await _showAddStudentDialog();
@@ -50,146 +55,153 @@ class _StudentListScreenState extends State<StudentListScreen> {
     }
   }
 
-  Future<Map<String, String?>> _showAddStudentDialog() async {
-    final TextEditingController nameController = TextEditingController();
-    String? selectedStandard = 'Nursery';
+Future<Map<String, String?>> _showAddStudentDialog() async {
+  final TextEditingController nameController = TextEditingController();
+  String? selectedStandard = 'Nursery';
 
-    final result = await showDialog<Map<String, String?>>(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              backgroundColor: Colors.grey[900], // Darker background
-              elevation: 8, // Elevated effect
-              title: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Add New Student',
-                    style: TextStyle(
-                      color: uddeshhyacolor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextField(
-                    controller: nameController,
-                    style: const TextStyle(color: textcolor),
-                    decoration: InputDecoration(
-                      hintText: 'Enter student name',
-                      hintStyle: TextStyle(color: Colors.grey[400]),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: uddeshhyacolor),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: uddeshhyacolor, width: 2.0),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      // errorText: _nameController.text.isEmpty
-                      //     ? 'Name cannot be empty'
-                      //     : null,
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  DropdownButton<String>(
-                    value: selectedStandard,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedStandard = newValue;
-                      });
-                    },
-                    items: <String>[
-                      'Nursery',
-                      '1st',
-                      '2nd',
-                      '3rd',
-                      '4th',
-                      '5th'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value,
-                            style: const TextStyle(color: Colors.white)),
-                      );
-                    }).toList(),
-                    dropdownColor: Colors.grey[900], // Match dark background
-                    iconEnabledColor: uddeshhyacolor, // Icon color
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(
-                        color: Colors.redAccent, fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: uddeshhyacolor, // Button background color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 5, // Button shadow
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12), // Padding
-                  ),
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(
-                        color: textcolor, fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    if (nameController.text.isNotEmpty) {
-                      Navigator.of(context).pop({
-                        'name': nameController.text,
-                        'standard': selectedStandard,
-                      });
-                    } else {
-                      // Show an error message if the name is empty
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
+  // Fetch standards from Firestore
+  final List<String> standards = await _standardsFuture;
 
-    return result ?? {}; // Ensure a non-null result is always returned
+  // Ensure the default value is present in the standards list
+  if (!standards.contains(selectedStandard)) {
+    selectedStandard = standards.isNotEmpty ? standards.first : null;
   }
 
+  final result = await showDialog<Map<String, String?>>(
+    context: context,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            backgroundColor: Colors.grey[900], // Darker background
+            elevation: 8, // Elevated effect
+            title: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Add New Student',
+                  style: TextStyle(
+                    color: uddeshhyacolor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: nameController,
+                  style: const TextStyle(color: textcolor),
+                  decoration: InputDecoration(
+                    hintText: 'Enter student name',
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: uddeshhyacolor),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: uddeshhyacolor, width: 2.0),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                DropdownButton<String>(
+                  value: selectedStandard,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedStandard = newValue;
+                    });
+                  },
+                  items: standards.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,
+                          style: const TextStyle(color: Colors.white)),
+                    );
+                  }).toList(),
+                  dropdownColor: Colors.grey[900], // Match dark background
+                  iconEnabledColor: uddeshhyacolor, // Icon color
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: Colors.redAccent, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: uddeshhyacolor, // Button background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 5, // Button shadow
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 12), // Padding
+                ),
+                child: const Text(
+                  'Add',
+                  style: TextStyle(
+                      color: textcolor, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  if (nameController.text.isNotEmpty) {
+                    Navigator.of(context).pop({
+                      'name': nameController.text,
+                      'standard': selectedStandard,
+                    });
+                  } else {
+                    // Show an error message if the name is empty
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
+
+  return result ?? {}; // Ensure a non-null result is always returned
+}
+
+
+  // Future<List<StudentModel>> _fetchFilteredStudents() async {
+  //   final students = await _studentService.getStudents(widget.classId);
+  //   return students.where((student) {
+  //     final matchesStandard =
+  //         _selectedStandard == 'All' || student.standard == _selectedStandard;
+  //     final matchesSearchQuery =
+  //         student.name.toLowerCase().contains(_searchQuery.toLowerCase());
+  //     return matchesStandard && matchesSearchQuery;
+  //   }).toList();
+  // }
+
   Future<List<StudentModel>> _fetchFilteredStudents() async {
-    final students = await _studentService.getStudents(widget.classId);
-    return students.where((student) {
-      final matchesStandard =
-          _selectedStandard == 'All' || student.standard == _selectedStandard;
-      final matchesSearchQuery =
-          student.name.toLowerCase().contains(_searchQuery.toLowerCase());
-      return matchesStandard && matchesSearchQuery;
-    }).toList();
+    final students = await _studentsFuture;
+    if (_selectedStandard == 'All' || _selectedStandard == null) {
+      return students;
+    }
+    return students.where((student) => student.standard == _selectedStandard).toList();
   }
 
   @override
@@ -250,31 +262,36 @@ class _StudentListScreenState extends State<StudentListScreen> {
                   ),
                 ),
                 const SizedBox(width: 16.0),
-                DropdownButton<String>(
-                  value: _selectedStandard,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedStandard = newValue!;
-                    });
-                  },
-                  items: <String>[
-                    'All',
-                    'Nursery',
-                    '1st',
-                    '2nd',
-                    '3rd',
-                    '4th',
-                    '5th'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value,
-                          style: const TextStyle(color: Colors.white)),
-                    );
-                  }).toList(),
-                  dropdownColor: Colors.grey[900], // Match dark background
-                  iconEnabledColor: uddeshhyacolor, // Icon color
-                ),
+                FutureBuilder<List<String>>(
+    future: _standardsFuture, // Fetch standards for dropdown
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator();
+      }
+      if (snapshot.hasError || !snapshot.hasData) {
+        return Text('Error');
+      }
+      final standards = snapshot.data!;
+      return DropdownButton<String>(
+        value: _selectedStandard,
+        onChanged: (String? newValue) {
+          setState(() {
+            _selectedStandard = newValue!;
+          });
+        },
+        items: ['All', ...standards].map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value, style: const TextStyle(color: Colors.white)),
+          );
+        }).toList(),
+        dropdownColor: Colors.grey[900],
+        iconEnabledColor: uddeshhyacolor,
+      );
+    },
+  ),
+
+
               ],
             ),
           ),
@@ -442,7 +459,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                           }
                           if (snapshot.hasError ||
                               !snapshot.hasData ||
-                              snapshot.data != 'admin') {
+                              (snapshot.data == 'admin' && snapshot.data== 'super_admin')) {
                             return const SizedBox.shrink();
                           }
                           return IconButton(
@@ -478,7 +495,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
             }
             if (snapshot.hasError ||
                 !snapshot.hasData ||
-                snapshot.data != 'admin') {
+                (snapshot.data != 'admin'&& snapshot.data != 'super_admin')) {
               return const SizedBox.shrink();
             }
             return FloatingActionButton.extended(

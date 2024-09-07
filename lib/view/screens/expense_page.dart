@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:uddeshhya/services/expense_service.dart';
 import 'package:uddeshhya/models/expense.dart';
@@ -7,6 +9,7 @@ import 'package:uddeshhya/view/widgets/header.dart';
 import '../../services/auth_service.dart';
 import 'admin_expense_page.dart';
 import 'package:emailjs/emailjs.dart' as emailjs;
+import 'package:http/http.dart' as http;
 
 class ExpensesPage extends StatefulWidget {
   const ExpensesPage({super.key});
@@ -139,7 +142,37 @@ class _ExpensesPageState extends State<ExpensesPage> {
         //print(templateParams);
         // ignore: use_build_context_synchronously
         sendEmail(context, templateParams);
+
+        var data = {
+        'data': [
+          {
+            'name': name,
+            'email': email,
+            'title': title,
+            'amount': amount.toString(),
+            'date': formattedDate,
+          }
+        ]
+      };
+
+      // Send data to SheetDB
+      var response = await http.post(
+        Uri.parse('https://sheetdb.io/api/v1/tful8j65g55mc'), // Replace with your SheetDB API URL
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Data sent to Google Sheets!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to send data to Google Sheets')),
+        );
       }
+      }
+
     }
   }
 
@@ -327,7 +360,6 @@ class _ExpensesPageState extends State<ExpensesPage> {
                                   Expanded(
                                     child: Row(
                                       children: [
-                                      
                                         Text(
                                           ' ₹${expense.amount}',
                                           style: const TextStyle(
@@ -400,7 +432,8 @@ class _ExpensesPageState extends State<ExpensesPage> {
                   }
                   if (snapshot.hasError ||
                       !snapshot.hasData ||
-                      snapshot.data != 'finance_team') {
+                      (snapshot.data != 'finance_team' &&
+                          snapshot.data != 'super_admin')) {
                     return const SizedBox.shrink();
                   }
                   return ElevatedButton(

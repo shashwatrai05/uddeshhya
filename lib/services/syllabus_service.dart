@@ -20,7 +20,8 @@ class SyllabusService {
 
   Future<SyllabusModel?> getSyllabus(String standard) async {
     try {
-      final docSnapshot = await _firestore.collection('syllabus').doc(standard).get();
+      final docSnapshot =
+          await _firestore.collection('syllabus').doc(standard).get();
       if (docSnapshot.exists) {
         final data = docSnapshot.data() as Map<String, dynamic>;
         return SyllabusModel.fromMap(data);
@@ -28,24 +29,51 @@ class SyllabusService {
         return null;
       }
     } catch (e) {
-     // print('Error getting syllabus: $e');
+      // print('Error getting syllabus: $e');
       return null;
     }
   }
 
   Future<void> addSyllabus(SyllabusModel syllabus) async {
     try {
-      await _firestore.collection('syllabus').doc(syllabus.standard).set(syllabus.toMap());
+      await _firestore
+          .collection('syllabus')
+          .doc(syllabus.standard)
+          .set(syllabus.toMap());
     } catch (e) {
-    //  print('Error adding syllabus: $e');
+      //  print('Error adding syllabus: $e');
     }
   }
 
   Future<void> updateSyllabus(SyllabusModel syllabus) async {
     try {
-      await _firestore.collection('syllabus').doc(syllabus.standard).update(syllabus.toMap());
+      print('Updating syllabus for: ${syllabus.standard}');
+      print(
+          'Topics to be saved: ${syllabus.topics.map((t) => t.title).toList()}'); // Debugging
+
+      await _firestore
+          .collection('syllabus')
+          .doc(syllabus.standard)
+          .set(syllabus.toMap());
     } catch (e) {
-    //  print('Error updating syllabus: $e');
+      print('Error updating syllabus: $e'); // Error logging
+    }
+  }
+
+  Future<List<String>> getStandards() async {
+    try {
+      final snapshot = await _firestore.collection('syllabus').get();
+      final standards = <String>[];
+      for (var doc in snapshot.docs) {
+        if (doc.data().containsKey('standard')) {
+          standards.add(doc.data()['standard']);
+        }
+      }
+      return standards;
+    } catch (e) {
+      // Handle errors as needed
+      print('Error fetching standards: $e');
+      return [];
     }
   }
 }

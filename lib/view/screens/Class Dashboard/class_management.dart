@@ -320,7 +320,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                       }
                       if (snapshot.hasError ||
                           !snapshot.hasData ||
-                          snapshot.data != 'admin') {
+                          (snapshot.data != 'admin' && snapshot.data != 'super_admin')) {
                         return const SizedBox.shrink();
                       }
                       return IconButton(
@@ -351,7 +351,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
             }
             if (snapshot.hasError ||
                 !snapshot.hasData ||
-                snapshot.data != 'admin') {
+                (snapshot.data != 'admin' && snapshot.data != 'super_admin')) {
               return const SizedBox.shrink();
             }
             return FloatingActionButton.extended(

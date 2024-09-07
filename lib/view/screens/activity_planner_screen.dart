@@ -6,6 +6,8 @@ import 'package:uddeshhya/view/widgets/LiquidProgressIndicator.dart';
 import 'package:uddeshhya/view/widgets/header.dart';
 import '../../models/planner.dart';
 import '../../services/auth_service.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ActivityPlannerScreen extends StatefulWidget {
   const ActivityPlannerScreen({super.key});
@@ -27,6 +29,29 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
     _activitiesFuture = _activityService.getActivities();
     _userRole = _authService.getUserRole(_authService.currentUser!.uid);
   }
+
+  Future<void> sendToGoogleSheets(ActivityModel activity) async {
+  final url = Uri.parse('https://sheetdb.io/api/v1/ahc57oa5ex9ak'); // Replace with your SheetDB API URL
+
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({
+      'data': {
+        //'id': activity.id,
+        'title': activity.title,
+        'date': DateFormat.yMd().format(activity.date),
+        'remark': activity.remark,
+      },
+    }),
+  );
+
+  if (response.statusCode == 201) { // SheetDB returns 201 for successful data creation
+    print('Data sent to Google Sheets via SheetDB');
+  } else {
+    print('Failed to send data to Google Sheets: ${response.statusCode}');
+  }
+}
 
   Future<void> _showActivityDialog({ActivityModel? activity}) async {
     final isEditing = activity != null;
@@ -72,6 +97,8 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
         });
       }
     }
+
+    
 
     await showDialog(
       context: context,
@@ -219,6 +246,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                   } else {
                     await _activityService.addActivity(newActivity);
                   }
+                  await sendToGoogleSheets(newActivity);
                   setState(() {
                     _activitiesFuture = _activityService.getActivities();
                   });
@@ -379,7 +407,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                                         return const SizedBox.shrink();
                                       }
                                       if (snapshot.hasData &&
-                                          snapshot.data == 'admin') {
+                                          (snapshot.data == 'admin' || snapshot.data== 'super_admin')) {
                                         return Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -437,7 +465,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
               }
               if (snapshot.hasError ||
                   !snapshot.hasData ||
-                  snapshot.data != 'admin') {
+                  (snapshot.data != 'admin' && snapshot.data != 'super_admin')) {
                 return const SizedBox.shrink();
               }
               return FloatingActionButton.extended(

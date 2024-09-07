@@ -327,11 +327,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                                   Expanded(
                                     child: Row(
                                       children: [
-                                        const Icon(
-                                          Icons.monetization_on,
-                                          color: Colors.white70,
-                                          size: 13,
-                                        ),
+                                      
                                         Text(
                                           ' ₹${expense.amount}',
                                           style: const TextStyle(

@@ -14,6 +14,7 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _emailController = TextEditingController();
   List<String> _emails = [];
+  // ignore: unused_field
   String? _emailError;
 
   @override

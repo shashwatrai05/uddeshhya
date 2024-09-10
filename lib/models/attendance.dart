@@ -4,7 +4,8 @@ class AttendanceModel {
   final String id;
   final String className;
   final DateTime date;
-  final Map<String, bool> studentAttendance; // Map of student names to attendance status
+  final Map<String, bool>
+      studentAttendance; // Map of student names to attendance status
 
   AttendanceModel({
     required this.id,
@@ -31,7 +32,8 @@ class AttendanceModel {
     };
   }
 
-  static Map<String, double> calculateAttendancePercentages(List<AttendanceModel> records) {
+  static Map<String, double> calculateAttendancePercentages(
+      List<AttendanceModel> records) {
     final Map<String, List<bool>> studentAttendanceMap = {};
 
     // Aggregate attendance records

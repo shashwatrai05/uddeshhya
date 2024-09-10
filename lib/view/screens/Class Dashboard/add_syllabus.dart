@@ -39,18 +39,18 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
   // }
 
   Future<void> _loadExistingSyllabus() async {
-  setState(() {
-    _topics.clear(); // Clear topics before loading new syllabus
-  });
-
-  final existingSyllabus = await _syllabusService.getSyllabus(_selectedStandard);
-  if (existingSyllabus != null) {
     setState(() {
-      _topics.addAll(existingSyllabus.topics);
+      _topics.clear(); // Clear topics before loading new syllabus
     });
-  }
-}
 
+    final existingSyllabus =
+        await _syllabusService.getSyllabus(_selectedStandard);
+    if (existingSyllabus != null) {
+      setState(() {
+        _topics.addAll(existingSyllabus.topics);
+      });
+    }
+  }
 
   void _addTopic() {
     final topicTitle = _topicController.text.trim();
@@ -68,44 +68,47 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
   }
 
   void _saveSyllabus() async {
-  if (_selectedStandard.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please select a standard.')),
+    if (_selectedStandard.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a standard.')),
+      );
+      return;
+    }
+
+    if (_topics.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please add at least one topic.')),
+      );
+      return;
+    }
+
+    print("Selected standard: $_selectedStandard"); // Debugging
+
+    final existingSyllabus =
+        await _syllabusService.getSyllabus(_selectedStandard);
+    // ignore: unused_local_variable
+    List<Topic> existingTopics = existingSyllabus?.topics ?? [];
+
+    // Merge existing topics with the updated ones (new topics, deletions)
+    final mergedTopics =
+        List<Topic>.from(_topics); // Use only the current _topics list
+
+    final syllabus = SyllabusModel(
+      standard: _selectedStandard, // Ensure the correct standard is being set
+      topics: mergedTopics, // Use the updated topics list
     );
-    return;
+
+    try {
+      await _syllabusService.updateSyllabus(syllabus); // Overwrite the syllabus
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save syllabus: $e')),
+      );
+    }
   }
-
-  if (_topics.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please add at least one topic.')),
-    );
-    return;
-  }
-
-  print("Selected standard: $_selectedStandard"); // Debugging
-
-  final existingSyllabus = await _syllabusService.getSyllabus(_selectedStandard);
-  List<Topic> existingTopics = existingSyllabus?.topics ?? [];
-
-  // Merge existing topics with the updated ones (new topics, deletions)
-  final mergedTopics = List<Topic>.from(_topics); // Use only the current _topics list
-
-  final syllabus = SyllabusModel(
-    standard: _selectedStandard, // Ensure the correct standard is being set
-    topics: mergedTopics, // Use the updated topics list
-  );
-
-  try {
-    await _syllabusService.updateSyllabus(syllabus); // Overwrite the syllabus
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
-  } catch (e) {
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to save syllabus: $e')),
-    );
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -144,96 +147,124 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                   // ),
                   //const SizedBox(height: 12),
                   Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Text(
-        'Select Standard',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    ),
-    Container(
-  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-  decoration: BoxDecoration(
-    color: Colors.grey[850], // Background color of the dropdown
-    borderRadius: BorderRadius.circular(10),
-    border: Border.all(color: Colors.white, width: 1.0), // Border styling
-  ),
-  child: DropdownButton<String>(
-    value: _isOtherSelected ? 'Other' : _selectedStandard, // Handle 'Other' selection separately
-    isExpanded: true, // Ensures the dropdown expands to fit the container
-    icon: Icon(
-      Icons.arrow_drop_down,
-      color: Colors.white, // Dropdown arrow color
-    ),
-    dropdownColor: Colors.grey[850], // Dropdown background color
-    underline: SizedBox(), // Remove default underline
-    style: TextStyle(
-      color: Colors.white, // Text color for dropdown items
-      fontSize: 16, // Font size for the dropdown text
-    ),
-    items: [
-      'Nursery', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th',
-      '9th', '10th', '11th', '12th', 'Other'
-    ].map<DropdownMenuItem<String>>((String value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text(value),
-      );
-    }).toList(),
-    onChanged: (String? value) {
-      setState(() {
-        if (value == 'Other') {
-          _isOtherSelected = true; // Show the text field
-          _selectedStandard = ''; // Clear the standard if 'Other' is selected
-        } else {
-          _isOtherSelected = false;
-          _selectedStandard = value!; // Use selected class
-          _loadExistingSyllabus(); // Load the syllabus for the selected class
-        }
-      });
-    },
-  ),
-),
-
-    if (_isOtherSelected)
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: TextField(
-          controller: _otherStandardController,
-          decoration: InputDecoration(
-            labelText: 'Enter Custom Class',
-            labelStyle: const TextStyle(color: Colors.white70),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.white54),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.blueAccent),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-                vertical: 12.0, horizontal: 16.0),
-            filled: true,
-            fillColor: Colors.grey[800],
-          ),
-          style: const TextStyle(color: Colors.white),
-          cursorColor: Colors.white,
-          onChanged: (text) {
-            setState(() {
-              _selectedStandard = text; // Use the entered text as the class name
-            });
-          },
-        ),
-      ),
-  ],
-),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: Text(
+                          'Select Standard',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 4.0),
+                        decoration: BoxDecoration(
+                          color: Colors
+                              .grey[850], // Background color of the dropdown
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: Colors.white,
+                              width: 1.0), // Border styling
+                        ),
+                        child: DropdownButton<String>(
+                          value: _isOtherSelected
+                              ? 'Other'
+                              : _selectedStandard, // Handle 'Other' selection separately
+                          isExpanded:
+                              true, // Ensures the dropdown expands to fit the container
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white, // Dropdown arrow color
+                          ),
+                          dropdownColor:
+                              Colors.grey[850], // Dropdown background color
+                          underline: SizedBox(), // Remove default underline
+                          style: TextStyle(
+                            color:
+                                Colors.white, // Text color for dropdown items
+                            fontSize: 16, // Font size for the dropdown text
+                          ),
+                          items: [
+                            'Nursery',
+                            '1st',
+                            '2nd',
+                            '3rd',
+                            '4th',
+                            '5th',
+                            '6th',
+                            '7th',
+                            '8th',
+                            '9th',
+                            '10th',
+                            '11th',
+                            '12th',
+                            'Other'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              if (value == 'Other') {
+                                _isOtherSelected = true; // Show the text field
+                                _selectedStandard =
+                                    ''; // Clear the standard if 'Other' is selected
+                              } else {
+                                _isOtherSelected = false;
+                                _selectedStandard =
+                                    value!; // Use selected class
+                                _loadExistingSyllabus(); // Load the syllabus for the selected class
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                      if (_isOtherSelected)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 8.0),
+                          child: TextField(
+                            controller: _otherStandardController,
+                            decoration: InputDecoration(
+                              labelText: 'Enter Custom Class',
+                              labelStyle:
+                                  const TextStyle(color: Colors.white70),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    const BorderSide(color: Colors.white54),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide:
+                                    const BorderSide(color: Colors.blueAccent),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 16.0),
+                              filled: true,
+                              fillColor: Colors.grey[800],
+                            ),
+                            style: const TextStyle(color: Colors.white),
+                            cursorColor: Colors.white,
+                            onChanged: (text) {
+                              setState(() {
+                                _selectedStandard =
+                                    text; // Use the entered text as the class name
+                              });
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
                   const SizedBox(height: 24),
                   Text(
                     'Add Topics',

@@ -1,5 +1,7 @@
 // services/activity_service.dart
 
+// ignore_for_file: unnecessary_cast
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/planner.dart';
@@ -9,16 +11,23 @@ class ActivityService {
 
   Future<List<ActivityModel>> getActivities() async {
     final querySnapshot = await _firestore.collection('activities').get();
-    // ignore: unnecessary_cast
-    return querySnapshot.docs.map((doc) => ActivityModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    return querySnapshot.docs
+        .map((doc) => ActivityModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 
   Future<void> addActivity(ActivityModel activity) async {
-    await _firestore.collection('activities').doc(activity.id).set(activity.toMap());
+    await _firestore
+        .collection('activities')
+        .doc(activity.id)
+        .set(activity.toMap());
   }
 
   Future<void> updateActivity(ActivityModel activity) async {
-    await _firestore.collection('activities').doc(activity.id).update(activity.toMap());
+    await _firestore
+        .collection('activities')
+        .doc(activity.id)
+        .update(activity.toMap());
   }
 
   Future<void> deleteActivity(String activityId) async {

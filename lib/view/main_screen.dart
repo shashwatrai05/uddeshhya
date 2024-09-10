@@ -28,7 +28,7 @@ class _MainPageState extends State<MainPage> {
       //ClassManagementScreen(),
       const ActivityPlannerScreen(), // Replace with your actual placeholder widget or screen
       //AttendanceHistoryScreen(),
-      
+
       //ActivityPlannerScreen()
       const ExpensesPage(),
       const ProfilePage(),
@@ -36,35 +36,37 @@ class _MainPageState extends State<MainPage> {
     ];
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: kblackcolor,
+      backgroundColor: kblackcolor,
       //backgroundColor: Colors.transparent,
-   appBar: AppBar(
-  title: const Text(
-    'UDDESHHYA',
-    style: TextStyle(
-      fontWeight: FontWeight.w700,
-      color: textcolor,
-    ),
-  ),
-  //elevation: 15,
-  backgroundColor: Colors.transparent,
-  leading: Padding(
-    padding: const EdgeInsets.only(left: 16.0),
-    // ignore: sized_box_for_whitespace
-    child: Container(
-      height: 10,  // Adjust this value to control the height of the container
-      child: Image.asset(
-        'assets/logo.png',
-        height: 10,  // Adjust this value to control the height of the image
-        width: 10,   // Optionally adjust this value to control the width of the image
+      appBar: AppBar(
+        title: const Text(
+          'UDDESHHYA',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: textcolor,
+          ),
+        ),
+        //elevation: 15,
+        backgroundColor: Colors.transparent,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          // ignore: sized_box_for_whitespace
+          child: Container(
+            height:
+                10, // Adjust this value to control the height of the container
+            child: Image.asset(
+              'assets/logo.png',
+              height:
+                  10, // Adjust this value to control the height of the image
+              width:
+                  10, // Optionally adjust this value to control the width of the image
+            ),
+          ),
+        ),
       ),
-    ),
-  ),
-),
 
       body: tabWidgets!.elementAt(_selectedIndex),
       bottomNavigationBar: CurvedNavigationBar(
@@ -74,7 +76,8 @@ class _MainPageState extends State<MainPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.home, size: 25, color: Colors.white),
-              Text('Class', style: TextStyle(color: Colors.white, fontSize: 12)),
+              Text('Class',
+                  style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
           // Column(
@@ -85,39 +88,38 @@ class _MainPageState extends State<MainPage> {
           //         style: TextStyle(color: Colors.white, fontSize: 12)),
           //   ],
           // ),
-          
+
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.local_activity_rounded,
-                  size: 25, color: Colors.white),
-              Text('Activities', style: TextStyle(color: Colors.white, fontSize: 12)),
+              Icon(Icons.local_activity_rounded, size: 25, color: Colors.white),
+              Text('Activities',
+                  style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
 
-            Column(
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.currency_rupee_rounded,
-                  size: 25, color: Colors.white),
-              Text('Expenses', style: TextStyle(color: Colors.white, fontSize: 12)),
+              Icon(Icons.currency_rupee_rounded, size: 25, color: Colors.white),
+              Text('Expenses',
+                  style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.person_2_rounded,
-                  size: 25, color: Colors.white),
-              Text('Profile', style: TextStyle(color: Colors.white, fontSize: 12)),
+              Icon(Icons.person_2_rounded, size: 25, color: Colors.white),
+              Text('Profile',
+                  style: TextStyle(color: Colors.white, fontSize: 12)),
             ],
           ),
         ],
         index: _selectedIndex,
         onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          
+          setState(() {
+            _selectedIndex = index;
+          });
         },
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 300),

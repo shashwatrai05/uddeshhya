@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../services/auth_service.dart';// Import your AuthService
+import '../services/auth_service.dart'; // Import your AuthService
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

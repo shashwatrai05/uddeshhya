@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class ClassSelector extends StatelessWidget {
   final List<String> classes;
-  final void Function(String?)? onClassSelected; // Updated to handle nullable String
+  final void Function(String?)?
+      onClassSelected; // Updated to handle nullable String
 
   const ClassSelector({super.key, required this.classes, this.onClassSelected});
 

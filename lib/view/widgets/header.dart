@@ -33,7 +33,7 @@ class Header extends StatelessWidget {
               //'Dashboard Overview',
               style: TextStyle(
                 color: textcolor,
-                fontSize: MediaQuery.of(context).size.width*0.06,
+                fontSize: MediaQuery.of(context).size.width * 0.06,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -43,9 +43,9 @@ class Header extends StatelessWidget {
               subtitle,
               //'Manage students, track attendance, and plan activities.',
               style: TextStyle(
-                color: Colors.white70, 
-                fontSize: MediaQuery.of(context).size.width*0.04,
-                ),
+                color: Colors.white70,
+                fontSize: MediaQuery.of(context).size.width * 0.04,
+              ),
             ),
           ],
         ),

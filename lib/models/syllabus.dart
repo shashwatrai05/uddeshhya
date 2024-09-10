@@ -28,9 +28,8 @@ class SyllabusModel {
   factory SyllabusModel.fromMap(Map<String, dynamic> map) {
     return SyllabusModel(
       standard: map['standard'] ?? '',
-      topics: List<Topic>.from(
-        (map['topics'] as List<dynamic>).map((item) => Topic.fromMap(item as Map<String, dynamic>))
-      ),
+      topics: List<Topic>.from((map['topics'] as List<dynamic>)
+          .map((item) => Topic.fromMap(item as Map<String, dynamic>))),
     );
   }
 

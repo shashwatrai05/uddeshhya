@@ -98,64 +98,65 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
               Padding(
-              padding: const EdgeInsets.only(
-                  top: 8.0, bottom: 8.0, left: 16, right: 16),
-              child: FutureBuilder<String>(
-                future: _userRole,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const SizedBox.shrink();
-                  }
-                  if (snapshot.hasError ||
-                      !snapshot.hasData ||
-                      (snapshot.data != 'admin' && snapshot.data != 'super_admin')) {
-                    return const SizedBox.shrink();
-                  }
-                  return SizedBox(
-                    width: MediaQuery.of(context).size.width*0.5,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      const AllowedEmailsScreen(), // Replace with your page
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
-                                    var begin = const Offset(1.0, 0.0);
-                                    var end = Offset.zero;
-                                    var curve = Curves.easeInOut;
-                                    var tween = Tween(begin: begin, end: end)
-                                        .chain(CurveTween(curve: curve));
-                                    return SlideTransition(
-                                      position: animation.drive(tween),
-                                      child: child,
-                                    );
-                                  },
-                                ),
-                              );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            uddeshhyacolor, // Updated background color
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                padding: const EdgeInsets.only(
+                    top: 8.0, bottom: 8.0, left: 16, right: 16),
+                child: FutureBuilder<String>(
+                  future: _userRole,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox.shrink();
+                    }
+                    if (snapshot.hasError ||
+                        !snapshot.hasData ||
+                        (snapshot.data != 'admin' &&
+                            snapshot.data != 'super_admin')) {
+                      return const SizedBox.shrink();
+                    }
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation,
+                                      secondaryAnimation) =>
+                                  const AllowedEmailsScreen(), // Replace with your page
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                var begin = const Offset(1.0, 0.0);
+                                var end = Offset.zero;
+                                var curve = Curves.easeInOut;
+                                var tween = Tween(begin: begin, end: end)
+                                    .chain(CurveTween(curve: curve));
+                                return SlideTransition(
+                                  position: animation.drive(tween),
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              uddeshhyacolor, // Updated background color
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: const Text(
+                          'See All Users',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: textcolor),
                         ),
                       ),
-                      child: const Text(
-                        'See All Users',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: textcolor),
-                      ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () => _logout(context),

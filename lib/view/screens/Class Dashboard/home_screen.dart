@@ -145,7 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                         if (snapshot.hasError ||
                             !snapshot.hasData ||
-                            (snapshot.data != 'admin' && snapshot.data != 'super_admin')) {
+                            (snapshot.data != 'admin' &&
+                                snapshot.data != 'super_admin')) {
                           return const SizedBox.shrink();
                         }
                         return DashboardCard(
@@ -177,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         );
                       }),
-                      const SizedBox(height: 25),
+                  const SizedBox(height: 25),
                 ],
               ),
             ),

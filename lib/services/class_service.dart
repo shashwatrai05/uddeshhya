@@ -1,5 +1,7 @@
 // class_service.dart
 
+// ignore_for_file: unnecessary_cast
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/class.dart';
 import '../models/student.dart';
@@ -9,12 +11,16 @@ class ClassService {
 
   Future<List<ClassModel>> getClasses() async {
     final querySnapshot = await _firestore.collection('classes').get();
-    // ignore: unnecessary_cast
-    return querySnapshot.docs.map((doc) => ClassModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    return querySnapshot.docs
+        .map((doc) => ClassModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 
   Future<void> addClass(ClassModel classModel) async {
-    await _firestore.collection('classes').doc(classModel.id).set(classModel.toMap());
+    await _firestore
+        .collection('classes')
+        .doc(classModel.id)
+        .set(classModel.toMap());
   }
 
   Future<void> deleteClass(String classId) async {
@@ -22,8 +28,13 @@ class ClassService {
   }
 
   Future<List<StudentModel>> getStudents(String classId) async {
-    final querySnapshot = await _firestore.collection('classes').doc(classId).collection('students').get();
-    // ignore: unnecessary_cast
-    return querySnapshot.docs.map((doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    final querySnapshot = await _firestore
+        .collection('classes')
+        .doc(classId)
+        .collection('students')
+        .get();
+    return querySnapshot.docs
+        .map((doc) => StudentModel.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 }

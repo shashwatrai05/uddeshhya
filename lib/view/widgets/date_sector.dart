@@ -5,7 +5,8 @@ class DateSelector extends StatelessWidget {
   final DateTime selectedDate;
   final void Function(DateTime) onDateSelected;
 
-  const DateSelector({super.key, 
+  const DateSelector({
+    super.key,
     required this.dates,
     required this.selectedDate,
     required this.onDateSelected,

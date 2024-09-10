@@ -11,16 +11,16 @@ class AttendanceService {
     final normalizedDate = DateTime(date.year, date.month, date.day);
     print(': jdfhdufkhfdfhkfhdfskfgewiufkjdfdjfd');
     print(Timestamp.fromDate(normalizedDate));
-    
+
     // Check if attendance has already been submitted for this class and normalized date
     final querySnapshot = await _db
         .collection('attendance')
         .where('className', isEqualTo: className)
         .where('date', isEqualTo: Timestamp.fromDate(normalizedDate))
         .get();
-    
+
     print('88384854557575948754895749534');
-    
+
     // If a record is found, show a message and prevent duplicate attendance
     if (querySnapshot.docs.isNotEmpty) {
       print('Query not empty');

@@ -2,7 +2,8 @@ class StudentModel {
   final String id;
   final String name;
   final String standard; // Field for the student's standard
-  final Map<String, bool> syllabusCompletion; // Track completion status of each topic
+  final Map<String, bool>
+      syllabusCompletion; // Track completion status of each topic
 
   StudentModel({
     required this.id,

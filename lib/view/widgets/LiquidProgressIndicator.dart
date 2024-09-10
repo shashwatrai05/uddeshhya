@@ -8,10 +8,12 @@ class LiquidProgressIndicator extends StatefulWidget {
   LiquidProgressIndicator({required this.value, required this.maxValue});
 
   @override
-  _LiquidProgressIndicatorState createState() => _LiquidProgressIndicatorState();
+  _LiquidProgressIndicatorState createState() =>
+      _LiquidProgressIndicatorState();
 }
 
-class _LiquidProgressIndicatorState extends State<LiquidProgressIndicator> with SingleTickerProviderStateMixin {
+class _LiquidProgressIndicatorState extends State<LiquidProgressIndicator>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -105,11 +107,13 @@ class LiquidPainter extends CustomPainter {
           0.35,
           0.5,
         ],
-      ).createShader(Rect.fromCircle(center: Offset(diameter, diameter), radius: radius))
+      ).createShader(
+          Rect.fromCircle(center: Offset(diameter, diameter), radius: radius))
       ..style = PaintingStyle.fill;
 
     Path circleClip = Path()
-      ..addOval(Rect.fromCenter(center: Offset(radius, radius), width: diameter, height: diameter));
+      ..addOval(Rect.fromCenter(
+          center: Offset(radius, radius), width: diameter, height: diameter));
     canvas.clipPath(circleClip, doAntiAlias: true);
     canvas.drawPath(path, paint);
   }

@@ -23,7 +23,7 @@ class ExpenseModel {
       title: data['title'] ?? '',
       amount: data['amount']?.toDouble() ?? 0.0,
       date: (data['date'] as Timestamp).toDate(),
-      userEmail: data['userEmail']??'',
+      userEmail: data['userEmail'] ?? '',
     );
   }
 

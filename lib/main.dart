@@ -14,27 +14,24 @@ void main() async {
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
-  
+
   try {
     //print('Initializing Firebase...');
     await Firebase.initializeApp(
-    options: const FirebaseOptions(
-    apiKey: 'AIzaSyCddQrr5NMlp9oT9BJb16CFOI8T8p40AAY',
-    appId: '1:431244686112:android:2de3225c55185acc051d45',
-    messagingSenderId: '431244686112',
-    projectId: 'uddeshhya-fe2ef',
-    storageBucket: 'gs://uddeshhya-fe2ef.appspot.com',
-  )
-    );
+        options: const FirebaseOptions(
+      apiKey: 'AIzaSyCddQrr5NMlp9oT9BJb16CFOI8T8p40AAY',
+      appId: '1:431244686112:android:2de3225c55185acc051d45',
+      messagingSenderId: '431244686112',
+      projectId: 'uddeshhya-fe2ef',
+      storageBucket: 'gs://uddeshhya-fe2ef.appspot.com',
+    ));
     //print('Firebase initialized successfully.');
   } catch (e) {
-   //print('Failed to initialize Firebase: $e');
+    //print('Failed to initialize Firebase: $e');
   }
-  
+
   runApp(MyApp());
 }
-
-
 
 class MyApp extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -61,8 +58,9 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         SignUpScreen.routeName: (context) => SignUpScreen(authService: _auth),
-        LoginScreen.routeName:(context)=> LoginScreen(authService: _auth),
-        ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(authService: AuthService()),
+        LoginScreen.routeName: (context) => LoginScreen(authService: _auth),
+        ForgotPasswordScreen.routeName: (context) =>
+            ForgotPasswordScreen(authService: AuthService()),
       },
     );
   }

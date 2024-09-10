@@ -55,8 +55,8 @@ class _SyllabusPageState extends State<SyllabusPage> {
           .get();
       if (doc.exists) {
         setState(() {
-          _updatedSyllabusCompletion = Map<String, bool>.from(
-              doc.data()?['syllabusCompletion'] ?? {});
+          _updatedSyllabusCompletion =
+              Map<String, bool>.from(doc.data()?['syllabusCompletion'] ?? {});
         });
       }
     } catch (e) {
@@ -141,7 +141,8 @@ class _SyllabusPageState extends State<SyllabusPage> {
                         ),
                       )
                     : ListView(
-                        children: _updatedSyllabusCompletion.entries.map((entry) {
+                        children:
+                            _updatedSyllabusCompletion.entries.map((entry) {
                           return Container(
                             margin: const EdgeInsets.symmetric(vertical: 8.0),
                             child: CheckboxListTile(

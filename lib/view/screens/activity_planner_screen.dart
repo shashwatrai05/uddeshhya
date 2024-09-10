@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart'; // For Clipboard
 import 'package:url_launcher/url_launcher.dart'; // For launching URL
 
-
 class ActivityPlannerScreen extends StatefulWidget {
   const ActivityPlannerScreen({super.key});
 
@@ -63,7 +62,8 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
     final isEditing = activity != null;
     final titleController = TextEditingController(text: activity?.title);
     final remarkController = TextEditingController(text: activity?.remark);
-    final driveLinkController = TextEditingController(text: activity?.driveLink);
+    final driveLinkController =
+        TextEditingController(text: activity?.driveLink);
     DateTime selectedDate = activity != null ? activity.date : DateTime.now();
     final dateController =
         TextEditingController(text: DateFormat.yMd().format(selectedDate));
@@ -203,28 +203,29 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                       ),
                     ),
                   ),
-                   const SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   TextField(
-                  controller: driveLinkController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintText: 'Enter drive link (optional)',
-                    hintStyle: TextStyle(color: Colors.grey[500]),
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: uddeshhyacolor),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: uddeshhyacolor, width: 2.0),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(8),
+                    controller: driveLinkController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Enter drive link (optional)',
+                      hintStyle: TextStyle(color: Colors.grey[500]),
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(color: uddeshhyacolor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: uddeshhyacolor, width: 2.0),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
-                ),
-
                 ],
               ),
             ),
@@ -267,7 +268,9 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                     title: titleController.text,
                     date: selectedDate,
                     remark: remarkController.text,
-                    driveLink: driveLinkController.text.isEmpty ? null : driveLinkController.text,
+                    driveLink: driveLinkController.text.isEmpty
+                        ? null
+                        : driveLinkController.text,
                   );
                   if (isEditing) {
                     await _activityService.updateActivity(newActivity);
@@ -405,57 +408,67 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                                   contentPadding: const EdgeInsets.symmetric(
                                       vertical: 2.0, horizontal: 16.0),
                                   title: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        activity.title,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 16.0,
-        ),
-      ),
-      const SizedBox(height: 2.0),
-      if (activity.driveLink != null && activity.driveLink!.isNotEmpty) 
-        GestureDetector(
-          onTap: () {
-            // Open the drive link
-            launch(activity.driveLink!);
-          },
-          onLongPress: () {
-            // Copy the link to the clipboard
-            Clipboard.setData(ClipboardData(text: activity.driveLink!));
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Drive link copied to clipboard'),
-              ),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.link,
-                  color: Colors.blueAccent.shade200,
-                ),
-                const SizedBox(width: 4.0),
-                Flexible(
-                  child: Text(
-                    activity.driveLink!,
-                    style: const TextStyle(
-                      color: Colors.blueAccent,
-                      decoration: TextDecoration.underline,
-                    ),
-                    overflow: TextOverflow.ellipsis, // Ellipsis for long links
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-    ],
-  ),
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        activity.title,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2.0),
+                                      if (activity.driveLink != null &&
+                                          activity.driveLink!.isNotEmpty)
+                                        GestureDetector(
+                                          onTap: () {
+                                            // Open the drive link
+                                            // ignore: deprecated_member_use
+                                            launch(activity.driveLink!);
+                                          },
+                                          onLongPress: () {
+                                            // Copy the link to the clipboard
+                                            Clipboard.setData(ClipboardData(
+                                                text: activity.driveLink!));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Drive link copied to clipboard'),
+                                              ),
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.link,
+                                                  color: Colors
+                                                      .blueAccent.shade200,
+                                                ),
+                                                const SizedBox(width: 4.0),
+                                                Flexible(
+                                                  child: Text(
+                                                    activity.driveLink!,
+                                                    style: const TextStyle(
+                                                      color: Colors.blueAccent,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                    ),
+                                                    overflow: TextOverflow
+                                                        .ellipsis, // Ellipsis for long links
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                   subtitle: Padding(
                                     padding: const EdgeInsets.only(top: 4.0),
                                     child: Text(

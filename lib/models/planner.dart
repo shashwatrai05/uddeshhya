@@ -7,14 +7,14 @@ class ActivityModel {
   final String title;
   final DateTime date;
   final String remark;
-  final String? driveLink;  // Optional drive link
+  final String? driveLink; // Optional drive link
 
   ActivityModel({
     required this.id,
     required this.title,
     required this.date,
     required this.remark,
-     this.driveLink, 
+    this.driveLink,
   });
 
   factory ActivityModel.fromMap(Map<String, dynamic> data) {
@@ -33,7 +33,7 @@ class ActivityModel {
       'title': title,
       'date': Timestamp.fromDate(date),
       'remark': remark,
-      if (driveLink != null) 'driveLink': driveLink, 
+      if (driveLink != null) 'driveLink': driveLink,
     };
   }
 }

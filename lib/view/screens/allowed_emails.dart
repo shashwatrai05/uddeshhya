@@ -78,32 +78,31 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor:kUpperContainerColor,
-          title: const Text('Edit Email', style: TextStyle(color: Colors.white)),
+          backgroundColor: kUpperContainerColor,
+          title:
+              const Text('Edit Email', style: TextStyle(color: Colors.white)),
           content: TextField(
             controller: _newEmailController,
-             style: const TextStyle(color: textcolor),
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.email, color: uddeshhyacolor),
-                  hintText: 'Write new email',
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: uddeshhyacolor),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: uddeshhyacolor, width: 1.5),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: uddeshhyacolor),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 12.0), // Adjust vertical padding
-                ),
+            style: const TextStyle(color: textcolor),
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.email, color: uddeshhyacolor),
+              hintText: 'Write new email',
+              hintStyle: TextStyle(color: Colors.grey[400]),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: uddeshhyacolor),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: uddeshhyacolor, width: 1.5),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: uddeshhyacolor),
+                borderRadius: BorderRadius.circular(2),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 12.0), // Adjust vertical padding
+            ),
             cursorColor: Colors.white,
             onChanged: (value) {
               setState(() {
@@ -123,7 +122,8 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
                 _editEmail(oldEmail, _newEmailController.text.trim());
                 Navigator.of(context).pop();
               },
-              child: const Text('Save', style: TextStyle(color: uddeshhyacolor)),
+              child:
+                  const Text('Save', style: TextStyle(color: uddeshhyacolor)),
             ),
           ],
         );
@@ -159,28 +159,29 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
                 Expanded(
                   child: TextField(
                     controller: _emailController,
-                     style: const TextStyle(color: textcolor),
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.email, color: uddeshhyacolor),
-                  hintText: 'Add a User',
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: uddeshhyacolor),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(color: uddeshhyacolor, width: 1.5),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: uddeshhyacolor),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 12.0), // Adjust vertical padding
-                ),
+                    style: const TextStyle(color: textcolor),
+                    decoration: InputDecoration(
+                      prefixIcon:
+                          const Icon(Icons.email, color: uddeshhyacolor),
+                      hintText: 'Add a User',
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(color: uddeshhyacolor),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: uddeshhyacolor, width: 1.5),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: uddeshhyacolor),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 12.0), // Adjust vertical padding
+                    ),
                     cursorColor: Colors.white,
                     onChanged: (value) {
                       setState(() {
@@ -193,13 +194,18 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
                 ElevatedButton(
                   onPressed: _addEmail,
                   style: ElevatedButton.styleFrom(
+                    // ignore: deprecated_member_use
                     primary: uddeshhyacolor,
-                    padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14.0, horizontal: 24.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text('Add', style: TextStyle(color: textcolor),),
+                  child: const Text(
+                    'Add',
+                    style: TextStyle(color: textcolor),
+                  ),
                 ),
               ],
             ),
@@ -210,7 +216,8 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
               itemBuilder: (context, index) {
                 final email = _emails[index];
                 return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 16.0),
                   decoration: BoxDecoration(
                     color: Colors.grey[800],
                     borderRadius: BorderRadius.circular(12),
@@ -231,7 +238,8 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.blueAccent),
+                          icon:
+                              const Icon(Icons.edit, color: Colors.blueAccent),
                           onPressed: () => _showEditDialog(email),
                         ),
                         IconButton(
@@ -242,24 +250,29 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
                               builder: (context) {
                                 return AlertDialog(
                                   backgroundColor: Colors.grey[900],
-                                  title: const Text('Confirm Deletion', style: TextStyle(color: Colors.white)),
+                                  title: const Text('Confirm Deletion',
+                                      style: TextStyle(color: Colors.white)),
                                   content: Text(
                                     'Are you sure you want to delete $email?',
-                                    style: const TextStyle(color: Colors.white70),
+                                    style:
+                                        const TextStyle(color: Colors.white70),
                                   ),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: const Text('Cancel', style: TextStyle(color: Colors.blueAccent)),
+                                      child: const Text('Cancel',
+                                          style: TextStyle(
+                                              color: Colors.blueAccent)),
                                     ),
                                     TextButton(
                                       onPressed: () {
                                         _removeEmail(email);
                                         Navigator.of(context).pop();
                                       },
-                                      child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                                      child: const Text('Delete',
+                                          style: TextStyle(color: Colors.red)),
                                     ),
                                   ],
                                 );

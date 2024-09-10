@@ -6,14 +6,19 @@ import 'package:uddeshhya/services/auth_service.dart';
 import 'view/screens/forget_password.dart';
 import 'view/screens/login_screen.dart';
 import 'view/screens/sign_up_screen.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]);
   
   try {
     //print('Initializing Firebase...');
     await Firebase.initializeApp(
-       options: const FirebaseOptions(
+    options: const FirebaseOptions(
     apiKey: 'AIzaSyCddQrr5NMlp9oT9BJb16CFOI8T8p40AAY',
     appId: '1:431244686112:android:2de3225c55185acc051d45',
     messagingSenderId: '431244686112',

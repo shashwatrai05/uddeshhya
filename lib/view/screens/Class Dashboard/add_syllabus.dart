@@ -27,16 +27,30 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
     _loadExistingSyllabus();
   }
 
+  // Future<void> _loadExistingSyllabus() async {
+  //   final existingSyllabus =
+  //       await _syllabusService.getSyllabus(_selectedStandard);
+  //   if (existingSyllabus != null) {
+  //     setState(() {
+  //       _topics.clear();
+  //       _topics.addAll(existingSyllabus.topics);
+  //     });
+  //   }
+  // }
+
   Future<void> _loadExistingSyllabus() async {
-    final existingSyllabus =
-        await _syllabusService.getSyllabus(_selectedStandard);
-    if (existingSyllabus != null) {
-      setState(() {
-        _topics.clear();
-        _topics.addAll(existingSyllabus.topics);
-      });
-    }
+  setState(() {
+    _topics.clear(); // Clear topics before loading new syllabus
+  });
+
+  final existingSyllabus = await _syllabusService.getSyllabus(_selectedStandard);
+  if (existingSyllabus != null) {
+    setState(() {
+      _topics.addAll(existingSyllabus.topics);
+    });
   }
+}
+
 
   void _addTopic() {
     final topicTitle = _topicController.text.trim();

@@ -8,6 +8,9 @@ import '../../models/planner.dart';
 import '../../services/auth_service.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart'; // For Clipboard
+import 'package:url_launcher/url_launcher.dart'; // For launching URL
+
 
 class ActivityPlannerScreen extends StatefulWidget {
   const ActivityPlannerScreen({super.key});
@@ -31,32 +34,36 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
   }
 
   Future<void> sendToGoogleSheets(ActivityModel activity) async {
-  final url = Uri.parse('https://sheetdb.io/api/v1/ahc57oa5ex9ak'); // Replace with your SheetDB API URL
+    final url = Uri.parse(
+        'https://sheetdb.io/api/v1/ahc57oa5ex9ak'); // Replace with your SheetDB API URL
 
-  final response = await http.post(
-    url,
-    headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({
-      'data': {
-        //'id': activity.id,
-        'title': activity.title,
-        'date': DateFormat.yMd().format(activity.date),
-        'remark': activity.remark,
-      },
-    }),
-  );
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'data': {
+          //'id': activity.id,
+          'title': activity.title,
+          'date': DateFormat.yMd().format(activity.date),
+          'remark': activity.remark,
+          'drivelink': activity.driveLink,
+        },
+      }),
+    );
 
-  if (response.statusCode == 201) { // SheetDB returns 201 for successful data creation
-    print('Data sent to Google Sheets via SheetDB');
-  } else {
-    print('Failed to send data to Google Sheets: ${response.statusCode}');
+    if (response.statusCode == 201) {
+      // SheetDB returns 201 for successful data creation
+      print('Data sent to Google Sheets via SheetDB');
+    } else {
+      print('Failed to send data to Google Sheets: ${response.statusCode}');
+    }
   }
-}
 
   Future<void> _showActivityDialog({ActivityModel? activity}) async {
     final isEditing = activity != null;
     final titleController = TextEditingController(text: activity?.title);
     final remarkController = TextEditingController(text: activity?.remark);
+    final driveLinkController = TextEditingController(text: activity?.driveLink);
     DateTime selectedDate = activity != null ? activity.date : DateTime.now();
     final dateController =
         TextEditingController(text: DateFormat.yMd().format(selectedDate));
@@ -97,8 +104,6 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
         });
       }
     }
-
-    
 
     await showDialog(
       context: context,
@@ -198,6 +203,28 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                       ),
                     ),
                   ),
+                   const SizedBox(height: 12),
+                  TextField(
+                  controller: driveLinkController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: 'Enter drive link (optional)',
+                    hintStyle: TextStyle(color: Colors.grey[500]),
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: uddeshhyacolor),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: uddeshhyacolor, width: 2.0),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: uddeshhyacolor.withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+
                 ],
               ),
             ),
@@ -240,6 +267,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                     title: titleController.text,
                     date: selectedDate,
                     remark: remarkController.text,
+                    driveLink: driveLinkController.text.isEmpty ? null : driveLinkController.text,
                   );
                   if (isEditing) {
                     await _activityService.updateActivity(newActivity);
@@ -336,7 +364,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                     }
                     final activities = snapshot.data!;
                     return Padding(
-                      padding: const EdgeInsets.only(bottom:60),
+                      padding: const EdgeInsets.only(bottom: 60),
                       child: ListView.builder(
                         itemCount: activities.length,
                         itemBuilder: (context, index) {
@@ -360,8 +388,8 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                               ),
                               //SizedBox(height: 8.0),
                               Container(
-                                margin:
-                                    const EdgeInsets.only(bottom: 20.0, top: 8.0),
+                                margin: const EdgeInsets.only(
+                                    bottom: 20.0, top: 8.0),
                                 decoration: BoxDecoration(
                                   color: Colors.grey[850],
                                   borderRadius: BorderRadius.circular(12),
@@ -377,18 +405,57 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                                   contentPadding: const EdgeInsets.symmetric(
                                       vertical: 2.0, horizontal: 16.0),
                                   title: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        activity.title,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        activity.title,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16.0,
+        ),
+      ),
+      const SizedBox(height: 2.0),
+      if (activity.driveLink != null && activity.driveLink!.isNotEmpty) 
+        GestureDetector(
+          onTap: () {
+            // Open the drive link
+            launch(activity.driveLink!);
+          },
+          onLongPress: () {
+            // Copy the link to the clipboard
+            Clipboard.setData(ClipboardData(text: activity.driveLink!));
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Drive link copied to clipboard'),
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.link,
+                  color: Colors.blueAccent.shade200,
+                ),
+                const SizedBox(width: 4.0),
+                Flexible(
+                  child: Text(
+                    activity.driveLink!,
+                    style: const TextStyle(
+                      color: Colors.blueAccent,
+                      decoration: TextDecoration.underline,
+                    ),
+                    overflow: TextOverflow.ellipsis, // Ellipsis for long links
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+    ],
+  ),
                                   subtitle: Padding(
                                     padding: const EdgeInsets.only(top: 4.0),
                                     child: Text(
@@ -407,7 +474,8 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                                         return const SizedBox.shrink();
                                       }
                                       if (snapshot.hasData &&
-                                          (snapshot.data == 'admin' || snapshot.data== 'super_admin')) {
+                                          (snapshot.data == 'admin' ||
+                                              snapshot.data == 'super_admin')) {
                                         return Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -424,7 +492,8 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
                                                   color: Colors.white),
                                               onPressed: () async {
                                                 await _activityService
-                                                    .deleteActivity(activity.id);
+                                                    .deleteActivity(
+                                                        activity.id);
                                                 setState(() {
                                                   _activitiesFuture =
                                                       _activityService
@@ -456,7 +525,7 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
           ),
         ),
         floatingActionButton: Padding(
-          padding: const EdgeInsets.only(top:10.0, right: 10.0),
+          padding: const EdgeInsets.only(top: 10.0, right: 10.0),
           child: FutureBuilder<String>(
             future: _userRole,
             builder: (context, snapshot) {
@@ -465,7 +534,8 @@ class _ActivityPlannerScreenState extends State<ActivityPlannerScreen> {
               }
               if (snapshot.hasError ||
                   !snapshot.hasData ||
-                  (snapshot.data != 'admin' && snapshot.data != 'super_admin')) {
+                  (snapshot.data != 'admin' &&
+                      snapshot.data != 'super_admin')) {
                 return const SizedBox.shrink();
               }
               return FloatingActionButton.extended(

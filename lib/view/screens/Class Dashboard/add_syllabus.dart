@@ -193,6 +193,8 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                           ),
                           items: [
                             'Nursery',
+                            'LKG',
+                            'UKG',
                             '1st',
                             '2nd',
                             '3rd',

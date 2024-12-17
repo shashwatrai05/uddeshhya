@@ -195,7 +195,7 @@ class _AllowedEmailsScreenState extends State<AllowedEmailsScreen> {
                   onPressed: _addEmail,
                   style: ElevatedButton.styleFrom(
                     // ignore: deprecated_member_use
-                    primary: uddeshhyacolor,
+                    foregroundColor: uddeshhyacolor,
                     padding: const EdgeInsets.symmetric(
                         vertical: 14.0, horizontal: 24.0),
                     shape: RoundedRectangleBorder(

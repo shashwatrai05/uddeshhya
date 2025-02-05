@@ -7,7 +7,6 @@ class AddSyllabusScreen extends StatefulWidget {
   const AddSyllabusScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _AddSyllabusScreenState createState() => _AddSyllabusScreenState();
 }
 
@@ -18,37 +17,26 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
   String _selectedStandard = 'Nursery';
   String? _topicError;
   bool _isOtherSelected = false;
-  final TextEditingController _otherStandardController =
-      TextEditingController();
+  final TextEditingController _otherStandardController = TextEditingController();
+  String? _lastLoadedStandard; // Track which standard's syllabus was last loaded
 
-  @override
-  void initState() {
-    super.initState();
-    _loadExistingSyllabus();
-  }
-
-  // Future<void> _loadExistingSyllabus() async {
-  //   final existingSyllabus =
-  //       await _syllabusService.getSyllabus(_selectedStandard);
-  //   if (existingSyllabus != null) {
-  //     setState(() {
-  //       _topics.clear();
-  //       _topics.addAll(existingSyllabus.topics);
-  //     });
-  //   }
-  // }
-
-  Future<void> _loadExistingSyllabus() async {
-    setState(() {
-      _topics.clear(); // Clear topics before loading new syllabus
-    });
-
-    final existingSyllabus =
-        await _syllabusService.getSyllabus(_selectedStandard);
-    if (existingSyllabus != null) {
+  Future<void> _loadExistingSyllabus(String standard) async {
+    // Only load if we haven't already loaded this standard's syllabus
+    if (_lastLoadedStandard != standard) {
       setState(() {
-        _topics.addAll(existingSyllabus.topics);
+        _topics.clear(); // Clear previous topics
       });
+
+      final existingSyllabus = await _syllabusService.getSyllabus(standard);
+      if (existingSyllabus != null) {
+        setState(() {
+          _topics.addAll(existingSyllabus.topics);
+          _lastLoadedStandard = standard; // Update the last loaded standard
+        });
+      } else {
+        // If no existing syllabus, just update the last loaded standard
+        _lastLoadedStandard = standard;
+      }
     }
   }
 
@@ -56,7 +44,11 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
     final topicTitle = _topicController.text.trim();
     if (topicTitle.isNotEmpty) {
       setState(() {
-        _topics.add(Topic(title: topicTitle, isCompleted: false));
+        _topics.add(Topic(
+          title: topicTitle,
+          order: _topics.length,
+          isCompleted: false,
+        ));
         _topicController.clear();
         _topicError = null;
       });
@@ -65,6 +57,20 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
         _topicError = 'Topic cannot be empty';
       });
     }
+  }
+
+  void _removeTopic(Topic topic) {
+    setState(() {
+      _topics.remove(topic);
+      // Reorder remaining topics
+      for (var i = 0; i < _topics.length; i++) {
+        _topics[i] = Topic(
+          title: _topics[i].title,
+          order: i,
+          isCompleted: _topics[i].isCompleted,
+        );
+      }
+    });
   }
 
   void _saveSyllabus() async {
@@ -82,30 +88,29 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
       return;
     }
 
-    print("Selected standard: $_selectedStandard"); // Debugging
-
-    final existingSyllabus =
-        await _syllabusService.getSyllabus(_selectedStandard);
-    // ignore: unused_local_variable
-    List<Topic> existingTopics = existingSyllabus?.topics ?? [];
-
-    // Merge existing topics with the updated ones (new topics, deletions)
-    final mergedTopics =
-        List<Topic>.from(_topics); // Use only the current _topics list
-
     final syllabus = SyllabusModel(
-      standard: _selectedStandard, // Ensure the correct standard is being set
-      topics: mergedTopics, // Use the updated topics list
+      standard: _selectedStandard,
+      topics: List<Topic>.from(_topics),
     );
 
     try {
-      await _syllabusService.updateSyllabus(syllabus); // Overwrite the syllabus
+      await _syllabusService.updateSyllabus(syllabus);
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Syllabus saved successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
       // ignore: use_build_context_synchronously
       Navigator.of(context).pop();
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save syllabus: $e')),
+        SnackBar(
+          content: Text('Failed to save syllabus: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -133,25 +138,15 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Text(
-                  //   'Select Standard',
-                  //   style: Theme.of(context)
-                  //       .textTheme
-                  //       .titleLarge
-                  //       ?.copyWith(color: Colors.white),
-                  // ),
-                  //const SizedBox(height: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Text(
                           'Select Standard',
                           style: TextStyle(
@@ -164,50 +159,31 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 16.0),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 4.0),
+                          horizontal: 12.0,
+                          vertical: 4.0,
+                        ),
                         decoration: BoxDecoration(
-                          color: Colors
-                              .grey[850], // Background color of the dropdown
+                          color: Colors.grey[850],
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                              color: Colors.white,
-                              width: 1.0), // Border styling
+                          border: Border.all(color: Colors.white, width: 1.0),
                         ),
                         child: DropdownButton<String>(
-                          value: _isOtherSelected
-                              ? 'Other'
-                              : _selectedStandard, // Handle 'Other' selection separately
-                          isExpanded:
-                              true, // Ensures the dropdown expands to fit the container
-                          icon: Icon(
+                          value: _isOtherSelected ? 'Other' : _selectedStandard,
+                          isExpanded: true,
+                          icon: const Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.white, // Dropdown arrow color
+                            color: Colors.white,
                           ),
-                          dropdownColor:
-                              Colors.grey[850], // Dropdown background color
-                          underline: SizedBox(), // Remove default underline
-                          style: TextStyle(
-                            color:
-                                Colors.white, // Text color for dropdown items
-                            fontSize: 16, // Font size for the dropdown text
+                          dropdownColor: Colors.grey[850],
+                          underline: const SizedBox(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
                           ),
                           items: [
-                            'Nursery',
-                            'LKG',
-                            'UKG',
-                            '1st',
-                            '2nd',
-                            '3rd',
-                            '4th',
-                            '5th',
-                            '6th',
-                            '7th',
-                            '8th',
-                            '9th',
-                            '10th',
-                            '11th',
-                            '12th',
-                            'Other'
+                            'Nursery', 'LKG', 'UKG', '1st', '2nd', '3rd', '4th',
+                            '5th', '6th', '7th', '8th', '9th', '10th', '11th',
+                            '12th', 'Other'
                           ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -217,14 +193,14 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                           onChanged: (String? value) {
                             setState(() {
                               if (value == 'Other') {
-                                _isOtherSelected = true; // Show the text field
-                                _selectedStandard =
-                                    ''; // Clear the standard if 'Other' is selected
+                                _isOtherSelected = true;
+                                _selectedStandard = '';
+                                _topics.clear();
+                                _lastLoadedStandard = null;
                               } else {
                                 _isOtherSelected = false;
-                                _selectedStandard =
-                                    value!; // Use selected class
-                                _loadExistingSyllabus(); // Load the syllabus for the selected class
+                                _selectedStandard = value!;
+                                _loadExistingSyllabus(_selectedStandard);
                               }
                             });
                           },
@@ -233,25 +209,26 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                       if (_isOtherSelected)
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 8.0),
+                            horizontal: 16.0,
+                            vertical: 8.0,
+                          ),
                           child: TextField(
                             controller: _otherStandardController,
                             decoration: InputDecoration(
                               labelText: 'Enter Custom Class',
-                              labelStyle:
-                                  const TextStyle(color: Colors.white70),
+                              labelStyle: const TextStyle(color: Colors.white70),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide:
-                                    const BorderSide(color: Colors.white54),
+                                borderSide: const BorderSide(color: Colors.white54),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide:
-                                    const BorderSide(color: Colors.blueAccent),
+                                borderSide: const BorderSide(color: Colors.blueAccent),
                               ),
                               contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 12.0, horizontal: 16.0),
+                                vertical: 12.0,
+                                horizontal: 16.0,
+                              ),
                               filled: true,
                               fillColor: Colors.grey[800],
                             ),
@@ -259,8 +236,9 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                             cursorColor: Colors.white,
                             onChanged: (text) {
                               setState(() {
-                                _selectedStandard =
-                                    text; // Use the entered text as the class name
+                                _selectedStandard = text;
+                                _topics.clear();
+                                _lastLoadedStandard = null;
                               });
                             },
                           ),
@@ -289,11 +267,12 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide:
-                              const BorderSide(color: Colors.blueAccent),
+                          borderSide: const BorderSide(color: Colors.blueAccent),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 16.0),
+                          vertical: 12.0,
+                          horizontal: 16.0,
+                        ),
                         errorText: _topicError,
                         filled: true,
                         fillColor: Colors.grey[800],
@@ -347,29 +326,30 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                                       style: TextStyle(color: textcolor),
                                     ),
                                     content: Text(
-                                        'Are you sure you want to delete this topic?',
-                                        style: TextStyle(
-                                            color: textcolor.withOpacity(0.8))),
+                                      'Are you sure you want to delete this topic?',
+                                      style: TextStyle(
+                                        color: textcolor.withOpacity(0.8),
+                                      ),
+                                    ),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: const Text('Cancel',
-                                            style: TextStyle(color: textcolor)),
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(color: textcolor),
+                                        ),
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          setState(() {
-                                            _topics.remove(topic);
-                                            print(
-                                                "Updated topics list: ${_topics.map((t) => t.title).toList()}"); // Debugging
-                                          });
+                                          _removeTopic(topic);
                                           Navigator.of(context).pop();
                                         },
-                                        child: const Text('Delete',
-                                            style: TextStyle(
-                                                color: uddeshhyacolor)),
+                                        child: const Text(
+                                          'Delete',
+                                          style: TextStyle(color: uddeshhyacolor),
+                                        ),
                                       ),
                                     ],
                                   );
@@ -387,21 +367,21 @@ class _AddSyllabusScreenState extends State<AddSyllabusScreen> {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 24),
                 ],
               ),
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(bottom: 30.0, left: 24.0, right: 24.0),
+            padding: const EdgeInsets.only(bottom: 30.0, left: 24.0, right: 24.0),
             child: Center(
               child: ElevatedButton(
                 onPressed: _saveSyllabus,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: uddeshhyacolor,
                   padding: const EdgeInsets.symmetric(
-                      vertical: 14.0, horizontal: 24.0),
+                    vertical: 14.0,
+                    horizontal: 24.0,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:uddeshhya/view/constants/theme.dart';
 import 'package:uddeshhya/view/screens/activity_planner_screen.dart';
 import 'package:uddeshhya/view/screens/Class%20Dashboard/home_screen.dart';
-import 'package:uddeshhya/view/screens/expense_page.dart';
+import 'package:uddeshhya/view/screens/expense/expense_page.dart';
 import 'package:uddeshhya/view/screens/profilepage.dart';
 
 class MainPage extends StatefulWidget {

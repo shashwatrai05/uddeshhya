@@ -73,32 +73,63 @@ class _AdminExpensePageState extends State<AdminExpensePage> {
   }
 
   void _deleteExpense(String email, String expenseId) async {
-    try {
-      await _expenseService.deleteExpense(email, expenseId);
-      _loadExpensesForAllUsers();
-    } catch (e) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to delete expense')),
-      );
-    }
-  }
+  try {
+    await _expenseService.deleteExpense(email, expenseId);
 
-  void _deleteAllExpenses(String email) async {
-    try {
-      final expenses = await _expenseService.getExpenses(email);
-      for (var expense in expenses) {
-        await _expenseService.deleteExpense(email, expense.id);
+    // Update local state
+    setState(() {
+      var expenses = _userExpenses[email] ?? [];
+      expenses.removeWhere((expense) => expense.id == expenseId);
+      
+      if (expenses.isEmpty) {
+        // If no expenses left, remove user completely
+        _userEmails.remove(email);
+        _userExpenses.remove(email);
+        _userTotalExpenses.remove(email);
+      } else {
+        // Update expenses list and total
+        _userExpenses[email] = expenses;
+        _userTotalExpenses[email] = expenses.fold(
+          0.0,
+          (sum, expense) => sum + expense.amount,
+        );
       }
-      _loadExpensesForAllUsers();
-    } catch (e) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to delete all expenses')),
-      );
-    }
-  }
+    });
 
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Expense deleted successfully')),
+    );
+  } catch (e) {
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to delete expense')),
+    );
+  }
+}
+
+void _deleteAllExpenses(String email) async {
+  try {
+    final deletedExpenses = await _expenseService.deleteAllUserExpenses(email);
+    
+    // Update local state
+    setState(() {
+      _userEmails.remove(email);
+      _userExpenses.remove(email);
+      _userTotalExpenses.remove(email);
+    });
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('All expenses deleted successfully')),
+    );
+  } catch (e) {
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to delete all expenses')),
+    );
+  }
+}
   Future<void> _showConfirmDialog(
       String email, String title, Function onConfirm) async {
     return showDialog<void>(
